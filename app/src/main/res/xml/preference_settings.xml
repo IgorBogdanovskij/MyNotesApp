@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Appearance"
+        >
+
+        <Preference
+
+            android:key="key"
+            android:title="Accent color"
+            />
+
+<!--    <ListPreference-->
+<!--        android:key="text_settings"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:defaultValue="true"-->
+<!--        android:entries="@array/textType"-->
+<!--        android:entryValues="@array/textValue"-->
+<!--        android:summary="@string/textSize_summary"-->
+<!--        android:title="@string/textSize" />-->
+
+<!--    <ListPreference-->
+<!--        android:key="font_settings"-->
+<!--        android:title="@string/textFont"-->
+<!--        android:defaultValue="true"-->
+<!--        android:entries="@array/textFont"-->
+<!--        android:entryValues="@array/fontValue"-->
+<!--        android:summary="@string/textFont_summary"/>-->
+
+
+<!--    <ListPreference-->
+
+<!--        android:key="theme_settings"-->
+<!--        android:title="@string/themeChoose"-->
+<!--        android:defaultValue="1"-->
+<!--        android:entries="@array/themeStyle"-->
+<!--        android:entryValues="@array/themeValue"-->
+<!--        android:summary="@string/themeChoose_summary"/>-->
+
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Other">
+
+    </PreferenceCategory>
+</PreferenceScreen>
