@@ -7,11 +7,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.notes.presentation.listNotes.ListNotesFragmentKotlin;
 
-public class MainActivity extends AppCompatActivity implements ListNotesFragmentKotlin.CallbackSupportNavigation {
+public class MainActivity extends AppCompatActivity implements ListNotesFragmentKotlin.CallbackSupportActionBar {
 
 
     @Override

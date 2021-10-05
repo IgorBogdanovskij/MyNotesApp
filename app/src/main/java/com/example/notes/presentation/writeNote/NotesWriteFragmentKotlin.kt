@@ -85,7 +85,6 @@ class NotesWriteFragmentKotlin : Fragment(R.layout.fragment_notes_write) {
             }
 
         }
-
     }
 
     private fun setupFragment() {

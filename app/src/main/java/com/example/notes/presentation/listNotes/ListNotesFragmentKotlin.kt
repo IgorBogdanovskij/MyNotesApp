@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -30,7 +31,8 @@ import javax.inject.Inject
 
 class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
 
-    private var isCheckedAllNotes = true
+    private var isCheckedCategory = false
+    private var checkedView:View? = null
 
     private var listCheckView = mutableListOf<View>()
 
@@ -42,7 +44,7 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
 
     private var popupMenu: PopupMenu? = null
 
-    private lateinit var onCallbackSupportNavigation: CallbackSupportNavigation
+    private lateinit var onCallbackSupportActionBar: CallbackSupportActionBar
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -56,7 +58,13 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        onCallbackSupportNavigation = context as CallbackSupportNavigation
+        onCallbackSupportActionBar = context as CallbackSupportActionBar
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        retainInstance = true;
     }
 
     override fun onCreateView(
@@ -114,6 +122,8 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
             NavigationViewDrawerKotlin(object : NavigationViewDrawerKotlin.OnClickListenerDrawer {
                 override fun onClick(nameGroup: String, linearLayout: LinearLayout) {
 
+                    checkedView = view
+                    isCheckedCategory = true
                     listCheckView.add(linearLayout)
                     listCheckView.forEach { view ->
                         if (view == linearLayout) {
@@ -132,6 +142,9 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
         setupDrawerRecyclerView()
 
         viewBinding.includeDrawer.linearAllNote.setOnClickListener {
+
+            checkedView = view
+            isCheckedCategory = true
             listCheckView.add(it)
             listCheckView.forEach { view ->
                 if (view == it) {
@@ -167,6 +180,10 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
         viewBinding.floatingButtonNotes.setOnClickListener {
             findNavController().navigate(R.id.notesFragmentWrite)
         }
+
+        if (isCheckedCategory) {
+            checkedView?.setBackgroundResource(R.drawable.select_item)
+        }
     }
 
     private fun setupDrawerRecyclerView() {
@@ -181,8 +198,6 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         viewBinding.myRecyclerViewForNotes.adapter = adapterListNotesKotlin
-
-        viewBinding.myRecyclerViewForNotes.setHasFixedSize(true)
 
         NotesItemTouchHelperKotlin(object : NotesItemTouchHelperKotlin.Callback {
             override fun onSwipe(position: Int) {
@@ -228,19 +243,35 @@ class ListNotesFragmentKotlin : Fragment(R.layout.fragment_notes) {
     }
 
     private fun setupNavigationView() {
-        onCallbackSupportNavigation.onEvent(viewBinding.toolbarNotes)
+        onCallbackSupportActionBar.onEvent(viewBinding.toolbarNotes)
         navController = findNavController()
         appBarConfiguration = AppBarConfiguration(navController.graph, viewBinding.myDrawerLayout)
         viewBinding.toolbarNotes.setupWithNavController(navController, appBarConfiguration)
     }
 
-    interface CallbackSupportNavigation {
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putBoolean(IS_CHECKED_CATEGORY, isCheckedCategory)
+//    }
+//
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        Toast.makeText(requireContext(), "${savedInstanceState?.getBoolean(IS_CHECKED_CATEGORY, false)}", Toast.LENGTH_SHORT).show()
+//
+//        if (savedInstanceState != null) {
+//            isCheckedCategory = savedInstanceState.getBoolean(IS_CHECKED_CATEGORY, false)
+//            checkedView?.setBackgroundResource(R.drawable.select_item)
+//        }
+//    }
+
+    interface CallbackSupportActionBar {
         fun onEvent(toolbar: Toolbar)
     }
 
     companion object {
 
         const val EXTRA_ID = "EXTRA_ID"
+        const val IS_CHECKED_CATEGORY = "IS_CHECKED_CATEGORY"
 
         fun newInstance() = ListNotesFragmentKotlin()
     }
