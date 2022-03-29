@@ -3,58 +3,22 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/myDrawerLayout"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
+    tools:context=".app.MainActivity"
     tools:openDrawer="end">
-
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
-            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                android:id="@+id/notes_is_empty"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="0dp"-->
-
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="@+id/myRecyclerViewForNotes">-->
-
-            <!--                <ImageView-->
-            <!--                    android:id="@+id/imageView2"-->
-            <!--                    android:layout_width="150dp"-->
-            <!--                    android:layout_height="150dp"-->
-            <!--                    android:layout_marginTop="200dp"-->
-            <!--                    android:src="@drawable/ic_stickynotesnorm"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="0dp"-->
-            <!--                    android:layout_marginTop="16dp"-->
-            <!--                    android:textSize="25sp"-->
-            <!--                    android:text="Your noteEntityKotlins is empty"-->
-            <!--                    android:fontFamily="sans-serif-condensed-medium"-->
-            <!--                    style="@style/TextAppearance.AppCompat.Body1"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />-->
-            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/myRecyclerViewForNotes"
@@ -67,7 +31,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
+                app:layout_constraintVertical_bias="1.0" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/floatingButtonNotes"
@@ -107,6 +72,15 @@
                 </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
+            <include
+                android:id="@+id/emptyListItem"
+                layout="@layout/empty_list_notes_element"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

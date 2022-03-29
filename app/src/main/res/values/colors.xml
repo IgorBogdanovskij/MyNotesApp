@@ -26,4 +26,9 @@
     <color name="brown">#a1887f</color>
     <color name="grey">#bdbdbd</color>
     <color name="blue_grey">#90a4ae</color>
+
+
+
+    <color name="errorItemTextView">#FF6200EE</color>
+
 </resources>

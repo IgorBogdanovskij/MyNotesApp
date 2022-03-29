@@ -3,21 +3,26 @@ package com.example.notes.di
 import android.content.Context
 import com.example.notes.di.data.DataModule
 import com.example.notes.di.domain.DomainModule
-import com.example.notes.presentation.listNotes.di.NoteComponent
-import com.example.notes.presentation.writeNote.di.NoteWriteComponent
+import com.example.notes.di.viewModel.ViewModelFactoryModule
+import com.example.notes.features.notes_feature.di.NotesComponent
+import com.example.notes.features.notedetails_feature.di.NoteDetailsComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [DataModule::class, DomainModule::class])
+@Component(modules = [DataModule::class, DomainModule::class, ViewModelFactoryModule::class])
 interface AppComponent {
 
-    fun noteComponent(): NoteComponent.Factory
-    fun noteWriteComponent(): NoteWriteComponent.Factory
+    fun plusNotesComponent(): NotesComponent
 
-    @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+    fun plusNoteDetailsComponent(): NoteDetailsComponent
+
+    @Component.Builder
+    interface Builder {
+
+        fun context(@BindsInstance context: Context): Builder
+
+        fun create(): AppComponent
     }
 }

@@ -22,8 +22,10 @@
     </style>
 
 
-
-
+    <style name="ErrorItemTextView">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/errorItemTextView</item>
+    </style>
 
     <style name="Red" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->

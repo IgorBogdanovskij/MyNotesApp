@@ -10,6 +10,7 @@
         <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/dialog_color_accent.xml" value="0.25416666666666665" />
         <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/dialog_new_group.xml" value="0.25416666666666665" />
         <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/drawer.xml" value="0.25416666666666665" />
+        <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/empty_list_notes_element.xml" value="0.25416666666666665" />
         <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/fragment_edit.xml" value="0.25416666666666665" />
         <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.25416666666666665" />
         <entry key="..\:/ANDROID/Notes/app/src/main/res/layout/fragment_notes_write.xml" value="0.25416666666666665" />
@@ -23,10 +24,29 @@
         <entry key="..\:/Notes/app/src/main/res/layout/fragment_edit.xml" value="0.25025641025641027" />
         <entry key="..\:/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.16111111111111112" />
         <entry key="..\:/Notes/app/src/main/res/layout/fragment_notes_write.xml" value="0.25416666666666665" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/activity_setting.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/category_layout.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/dialog_color_accent.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/dialog_new_group.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/drawer.xml" value="0.11196911196911197" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/empty_list_notes_element.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_edit.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_note_details.xml" value="0.12037037037037036" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes_write.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/item_drawer_adapter.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/item_notes.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/oval.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/menu/main_menu.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/menu/menu_edit.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/menu/popup_menu.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/menu/popup_menu_drawer.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/xml/preference_settings.xml" value="0.24010416666666667" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

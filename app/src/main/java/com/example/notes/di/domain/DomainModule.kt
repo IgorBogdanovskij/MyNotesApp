@@ -1,18 +1,19 @@
 package com.example.notes.di.domain
 
-import com.example.notes.domain.interactor.INotesInteractor
-import com.example.notes.domain.interactor.NotesInteractorImp
-import com.example.notes.domain.repository.INotesRepository
+import com.example.domainn.interactor.NotesInteractor
+import com.example.domainn.interactor.NotesInteractorImp
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [DomainModule.InnerDomainModule::class])
 class DomainModule {
 
-    @Singleton
-    @Provides
-    fun provideNotesInteractor(repository: INotesRepository): INotesInteractor {
-        return NotesInteractorImp(repository)
+    @Module
+    interface InnerDomainModule {
+
+        @Binds
+        @Singleton
+        fun bindNotesInteractor(notesInteractorImp: NotesInteractorImp): NotesInteractor
     }
 }
