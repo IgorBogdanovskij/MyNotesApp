@@ -1,10 +1,9 @@
 package com.example.data.repository
 
-import com.example.data.locale.dao.NoteDao
+import com.example.data.local.dao.NoteDao
 import com.example.domainn.entity.NoteEntity
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import io.reactivex.rxjava3.core.Single
 import org.junit.Test
 import java.util.*

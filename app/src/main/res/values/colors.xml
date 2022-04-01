@@ -7,8 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-
     <color name="red">#ef9a9a</color>
     <color name="pink">#f06292</color>
     <color name="purple">#D1C4E9</color>
@@ -26,9 +24,5 @@
     <color name="brown">#a1887f</color>
     <color name="grey">#bdbdbd</color>
     <color name="blue_grey">#90a4ae</color>
-
-
-
     <color name="errorItemTextView">#FF6200EE</color>
-
 </resources>

@@ -2,7 +2,7 @@ package com.example.notes.features.listNotes
 
 import com.example.domainn.entity.NoteEntity
 import com.example.domainn.interactor.NotesInteractor
-import com.example.notes.features.notes_feature.NotesViewModel
+import com.example.notes.features.notes.presentation.NotesViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

@@ -1,6 +1,6 @@
 package com.example.data.repository
 
-import com.example.data.locale.dao.NoteDao
+import com.example.data.local.dao.NoteDao
 import com.example.domainn.entity.NoteEntity
 import com.example.domainn.repository.NotesRepository
 import io.reactivex.rxjava3.core.Completable

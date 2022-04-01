@@ -1,15 +1,15 @@
 package com.example.notes.mappers
 
 import com.example.domainn.entity.NoteEntity
-import com.example.notes.models.NoteUI
+import com.example.notes.models.NoteUi
 
 
-fun mapListToNoteEntity(list:List<NoteUI>): List<NoteEntity> {
+fun mapListToNoteEntity(list:List<NoteUi>): List<NoteEntity> {
 
     val listNotesUI = mutableListOf<NoteEntity>()
 
     list.forEach {
-        NoteUI(
+        NoteUi(
             id = it.id,
             title = it.title,
             description = it.description,
@@ -23,12 +23,12 @@ fun mapListToNoteEntity(list:List<NoteUI>): List<NoteEntity> {
     return listNotesUI
 }
 
-fun mapToNoteEntity(noteUI: NoteUI) =
+fun mapToNoteEntity(noteUi: NoteUi) =
     NoteEntity(
-        title = noteUI.title,
-        description = noteUI.description,
-        colorBackground = noteUI.colorBackground,
-        colorText = noteUI.colorText,
-        data = noteUI.data,
-        nameGroup = noteUI.nameGroup
-    ).apply { id = noteUI.id }
+        title = noteUi.title,
+        description = noteUi.description,
+        colorBackground = noteUi.colorBackground,
+        colorText = noteUi.colorText,
+        data = noteUi.data,
+        nameGroup = noteUi.nameGroup
+    ).apply { id = noteUi.id }

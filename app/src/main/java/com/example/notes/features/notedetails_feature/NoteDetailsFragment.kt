@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.notes.app.App
 import com.example.notes.R
 import com.example.domainn.entity.NoteEntity
 import com.example.notes.databinding.FragmentNoteDetailsBinding
-import com.example.notes.features.notes_feature.NotesFragment
+import com.example.notes.di.Injector
+import com.example.notes.features.notes.ui.NotesFragment
 import java.util.*
 import javax.inject.Inject
 
@@ -33,15 +33,8 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+        Injector.inject(this)
         noteId = requireArguments().getInt(NotesFragment.EXTRA_ID, 0)
-    }
-
-    private fun initDagger() {
-        (activity?.application as App)
-            .appComponent
-            .plusNoteDetailsComponent()
-            .inject(this)
     }
 
     override fun onCreateView(
@@ -49,9 +42,7 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initDagger()
         viewBinding = FragmentNoteDetailsBinding.inflate(inflater)
-
         return viewBinding.root
     }
 
@@ -144,5 +135,10 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
         val mArrayAdapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list);
         viewBinding.autoCompleteTextViewWrite.setAdapter(mArrayAdapter);
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Injector.clearNoteDetailsComponent()
     }
 }

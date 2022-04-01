@@ -1,18 +1,26 @@
 package com.example.notes.features.notedetails_feature.di
 
 import androidx.lifecycle.ViewModel
-import com.example.notes.di.viewModel.ViewModelFactoryModule
+import com.example.domainn.interactor.NotesInteractor
+import com.example.domainn.interactor.NotesInteractorImp
 import com.example.notes.di.viewModel.ViewModelKey
 import com.example.notes.features.notedetails_feature.NoteDetailsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Module(includes = [ViewModelFactoryModule::class])
-abstract class NoteDetailsModule {
+@Module(includes = [NoteDetailsModule.InnerNoteDetailsModule::class])
+class NoteDetailsModule {
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(NoteDetailsViewModel::class)
-    abstract fun bindNoteWriteViewModel(viewModel: NoteDetailsViewModel): ViewModel
+    @Module
+    interface InnerNoteDetailsModule {
+        @Binds
+        @IntoMap
+        @ViewModelKey(NoteDetailsViewModel::class)
+        fun bindNoteDetailsViewModel(viewModel: NoteDetailsViewModel): ViewModel
+
+        @Binds
+        @NoteDetailsScope
+        fun bindNotesInteractor(notesInteractorImp: NotesInteractorImp): NotesInteractor
+    }
 }
