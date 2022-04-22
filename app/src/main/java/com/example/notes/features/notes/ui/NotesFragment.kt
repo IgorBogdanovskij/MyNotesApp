@@ -2,15 +2,12 @@ package com.example.notes.features.notes.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +30,7 @@ import com.example.notes.features.notes.recycler.groups.OnGroupClickListener
 import com.example.notes.features.notes.recycler.notes.NotesAdapter
 import com.example.notes.features.notes.recycler.notes.OnNoteClickListener
 import com.example.notes.models.NoteUi
+import com.example.notes.utility.executeCommand
 import javax.inject.Inject
 
 
@@ -41,8 +39,6 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     NotesItemTouchHelper.NotesItemTouchHelperCallback,
     PopupMenu.OnMenuItemClickListener,
     OnGroupClickListener {
-
-    private var listCheckView = mutableListOf<View>()
 
     private lateinit var fragmentNotesBinding: FragmentNotesBinding
     lateinit var notesAdapter: NotesAdapter
@@ -94,7 +90,6 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
                 ShowAllNotesCommand(
                     fragmentNotesBinding,
                     notesViewModel,
-                    fragmentNotesBinding.includeDrawer.DrawerRecyclerView,
                     it
                 )
             )
@@ -110,7 +105,6 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
             noteUi = it
         }
 
-        // TODO: think about move this feature in other place
         notesViewModel.allNotesByGroup.observe(viewLifecycleOwner) {
             notesAdapter.submitList(it.toList())
         }
@@ -130,9 +124,9 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     }
 
     private fun setupGroupsRecyclerView() {
-        fragmentNotesBinding.includeDrawer.DrawerRecyclerView.layoutManager =
+        fragmentNotesBinding.includeDrawer.drawerRecyclerView.layoutManager =
             LinearLayoutManager(requireContext())
-        fragmentNotesBinding.includeDrawer.DrawerRecyclerView.adapter = adapterListGroups
+        fragmentNotesBinding.includeDrawer.drawerRecyclerView.adapter = adapterListGroups
     }
 
     private fun setupNotesRecyclerView() {
@@ -153,10 +147,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     }
 
     override fun onNoteClick(noteUi: NoteUi) {
-        findNavController().navigate(
-            R.id.noteDetailsFragment,
-            bundleOf(EXTRA_ID to noteUi.id)
-        )
+        findNavController().navigate(R.id.noteDetailsFragment, bundleOf(NOTE_ID to noteUi.id))
     }
 
     override fun onNoteLongClick(view: View) {
@@ -187,25 +178,26 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         return true
     }
 
-    private fun executeCommand(command: Command) = command.execute()
-
     override fun onStop() {
         super.onStop()
         Injector.clearNotesComponent()
     }
 
-    companion object {
-        const val EXTRA_ID = "EXTRA_ID"
-    }
-
-    override fun onGroupClick(nameGroup: String, groupItemViewBinding: GroupItemBinding) {
+    override fun onGroupClick(
+        nameGroup: String,
+        view: View
+    ) {
         executeCommand(
             ShowNotesByGroupCommand(
                 fragmentNotesBinding,
-                groupItemViewBinding,
                 notesViewModel,
-                nameGroup
+                nameGroup,
+                view
             )
         )
+    }
+
+    companion object {
+        const val NOTE_ID = "NOTE_ID"
     }
 }

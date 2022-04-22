@@ -1,8 +1,8 @@
 package com.example.notes.di
 
 import android.content.Context
-import com.example.notes.features.notedetails_feature.NoteDetailsFragment
-import com.example.notes.features.notedetails_feature.di.NoteDetailsComponent
+import com.example.notes.features.details.ui.NoteDetailsFragment
+import com.example.notes.features.details.di.NoteDetailsComponent
 import com.example.notes.features.notes.di.NotesComponent
 import com.example.notes.features.notes.ui.NotesFragment
 

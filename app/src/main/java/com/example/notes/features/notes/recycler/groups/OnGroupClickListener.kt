@@ -1,7 +1,7 @@
 package com.example.notes.features.notes.recycler.groups
 
-import com.example.notes.databinding.GroupItemBinding
+import android.view.View
 
 interface OnGroupClickListener {
-    fun onGroupClick(nameGroup: String, groupItemViewBinding: GroupItemBinding)
+    fun onGroupClick(nameGroup: String, view: View)
 }

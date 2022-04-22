@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTitle" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floatingActionButtonAdd"
+        android:id="@+id/applyChanges"
         android:layout_width="56dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

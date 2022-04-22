@@ -11,7 +11,6 @@ import com.example.notes.features.notes.presentation.NotesViewModel
 class ShowAllNotesCommand(
     private val fragmentNotesBinding: FragmentNotesBinding,
     private val notesViewModel: NotesViewModel,
-    private val groupRecycleView: RecyclerView,
     private val view: View
 ) : Command {
 
@@ -24,8 +23,9 @@ class ShowAllNotesCommand(
             }
         }.also { notesViewModel.getAllNotes() }
 
-        repeat(groupRecycleView.childCount){ position ->
-            groupRecycleView.getChildAt(position).setBackgroundResource(0)
+        repeat(fragmentNotesBinding.includeDrawer.drawerRecyclerView.childCount) { position ->
+            fragmentNotesBinding.includeDrawer.drawerRecyclerView.getChildAt(position)
+                .setBackgroundResource(0)
         }
     }
 }

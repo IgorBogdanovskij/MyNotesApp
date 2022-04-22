@@ -1,4 +1,4 @@
-package com.example.notes.features.notedetails_feature.di
+package com.example.notes.features.details.di
 
 import javax.inject.Scope
 

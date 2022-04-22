@@ -1,6 +1,6 @@
-package com.example.notes.features.notedetails_feature.di
+package com.example.notes.features.details.di
 
-import com.example.notes.features.notedetails_feature.NoteDetailsFragment
+import com.example.notes.features.details.ui.NoteDetailsFragment
 import dagger.Subcomponent
 
 @NoteDetailsScope

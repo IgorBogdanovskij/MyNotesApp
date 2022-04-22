@@ -1,10 +1,10 @@
-package com.example.notes.features.notedetails_feature.di
+package com.example.notes.features.details.di
 
 import androidx.lifecycle.ViewModel
 import com.example.domainn.interactor.NotesInteractor
 import com.example.domainn.interactor.NotesInteractorImp
 import com.example.notes.di.viewModel.ViewModelKey
-import com.example.notes.features.notedetails_feature.NoteDetailsViewModel
+import com.example.notes.features.details.presentation.NoteDetailsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

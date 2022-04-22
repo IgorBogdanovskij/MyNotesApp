@@ -1,8 +1,5 @@
 package com.example.notes.utility
 
-import androidx.navigation.NavController
+import com.example.notes.common.Command
 
-fun NavController.navigateToAndRemoveFromBackStack(directionId: Int) {
-    this.popBackStack()
-    navigate(directionId)
-}
+fun executeCommand(command: Command) = command.execute()

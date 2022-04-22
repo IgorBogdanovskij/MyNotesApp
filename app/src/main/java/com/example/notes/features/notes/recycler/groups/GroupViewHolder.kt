@@ -11,7 +11,7 @@ class GroupViewHolder(
 
     init {
         groupItemViewBinding.root.setOnClickListener {
-            onGroupClickListener.onGroupClick(itemByPositionCallback(adapterPosition), groupItemViewBinding)
+            onGroupClickListener.onGroupClick(itemByPositionCallback(adapterPosition), it)
         }
     }
 
