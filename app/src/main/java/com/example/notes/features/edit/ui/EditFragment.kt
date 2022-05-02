@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import com.example.notes.di.viewModel.ViewModelFactory
 import com.example.notes.features.edit.commands.OnSaveEditCommand
 import com.example.notes.features.edit.presentation.EditViewModel
 import com.example.notes.features.notes.ui.NotesFragment
-import com.example.notes.features.notes.ui.OnSetSupportActionBarCallback
 import com.example.notes.models.NoteUi
 import com.example.notes.utility.executeCommand
 import javax.inject.Inject
@@ -27,6 +25,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     private lateinit var viewBinding: FragmentEditBinding
     private var noteId by Delegates.notNull<Int>()
     private lateinit var noteUi: NoteUi
+    private lateinit var colorPicker: ColorPicker
 
     @Inject
     lateinit var factoryEditViewModel: ViewModelFactory
@@ -50,26 +49,30 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initData()
+        initState()
         initListeners()
         initObservers()
     }
 
     private fun initListeners() {
-        viewBinding.saveEditButton.setOnClickListener {
+        viewBinding.saveButtonEditScreen.setOnClickListener {
             executeCommand(
                 OnSaveEditCommand(
                     findNavController(),
                     viewBinding,
-                    viewModel
+                    viewModel,
+                    colorPicker,
+                    noteUi
                 )
             )
         }
     }
 
-    private fun initData() {
+    private fun initState() {
         viewModel.getNoteById(noteId)
         viewModel.getAllNameOfGroups()
+
+        colorPicker = SimpleColorPicker(viewBinding)
     }
 
     private fun initObservers() {
@@ -85,10 +88,10 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     private fun setListInAutoCompleteText(list: List<String>) {
         val mArrayAdapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list);
-        viewBinding.autoCompleteTextView.setAdapter(mArrayAdapter);
+        viewBinding.autoCompleteTextViewEditScreen.setAdapter(mArrayAdapter);
 
         list.find { noteUi.nameGroup == it }?.let {
-            viewBinding.autoCompleteTextView.setText(
+            viewBinding.autoCompleteTextViewEditScreen.setText(
                 mArrayAdapter.getItem(mArrayAdapter.getPosition(it)), false
             )
         }

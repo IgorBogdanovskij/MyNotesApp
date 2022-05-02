@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <ImageView
-        android:id="@+id/oval"
+        android:id="@+id/itemOvalColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="2dp"
         android:src="@drawable/oval" />
 
     <ImageView
         android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:src="@drawable/ic_baseline_check_24"
         android:visibility="invisible" />
 </FrameLayout>

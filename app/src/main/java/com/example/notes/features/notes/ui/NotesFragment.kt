@@ -68,7 +68,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onSetSupportActionBarCallback.onEvent(fragmentNotesBinding.toolbarNotes)
+        onSetSupportActionBarCallback.onEvent(fragmentNotesBinding.toolbarNotesScreen)
 
         setupNavigationView()
         setupNotesAdapter()
@@ -135,7 +135,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         navController = findNavController()
         appBarConfiguration =
             AppBarConfiguration(navController.graph, fragmentNotesBinding.drawerLayout)
-        fragmentNotesBinding.toolbarNotes.setupWithNavController(navController, appBarConfiguration)
+        fragmentNotesBinding.toolbarNotesScreen.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onNoteClick(noteUi: NoteUi) {

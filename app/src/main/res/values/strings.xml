@@ -6,4 +6,5 @@
     <string name="snack_bar_delete_message">Are you sure?</string>
     <string name="title_activity_note_details_compose">NoteDetailsCompose</string>
     <string name="save">Save</string>
+    <string name="your_groups">Your groups</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.notes.features.notes.recycler.notes
 
+import android.content.res.Resources
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.databinding.NoteItemBinding
@@ -27,6 +28,11 @@ class NotesViewHolder(
     fun bind(noteEntity: NoteUi) {
         itemNotesBinding.textForAdapterItemTitle.text = noteEntity.title
         itemNotesBinding.textForAdapterItemDescription.text = noteEntity.description
+        itemNotesBinding.cardViewForNote.setCardBackgroundColor(
+            itemNotesBinding.root.context.resources.getColor(
+                noteEntity.colorBackground, null
+            )
+        )
         if (noteEntity.nameGroup.isEmpty()) {
             itemNotesBinding.groupName.visibility = View.GONE
         } else {
