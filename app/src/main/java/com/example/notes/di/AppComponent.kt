@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.notes.di.data.DataModule
 import com.example.notes.di.viewModel.ViewModelModule
 import com.example.notes.features.details.di.NoteDetailsComponent
+import com.example.notes.features.edit.di.EditComponent
 import com.example.notes.features.notes.di.NotesComponent
 import dagger.BindsInstance
 import dagger.Component
@@ -15,6 +16,7 @@ interface AppComponent {
 
     fun plusNotesComponent(): NotesComponent
     fun plusNoteDetailsComponent(): NoteDetailsComponent
+    fun plusEditComponent(): EditComponent
 
     @Component.Builder
     interface Builder {

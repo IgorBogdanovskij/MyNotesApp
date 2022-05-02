@@ -1,53 +1,46 @@
-package com.example.notes.features.details.presentation
+package com.example.notes.features.edit.presentation
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domainn.entity.NoteEntity
 import com.example.domainn.interactor.NotesInteractor
 import com.example.notes.mappers.mapItemToNoteUI
 import com.example.notes.models.NoteUi
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NoteDetailsViewModel @Inject constructor(
-    private val interactor: NotesInteractor
+class EditViewModel @Inject constructor(
+    private val notesInteractor: NotesInteractor
 ) : ViewModel() {
 
-    private var _noteUi: MutableLiveData<NoteUi> = MutableLiveData()
-    val noteUi: LiveData<NoteUi>
-        get() = _noteUi
-
     private var _allNameOfGroups: MutableLiveData<List<String>> = MutableLiveData()
-    val allNameOfGroups: LiveData<List<String>>
-        get() = _allNameOfGroups
+    val allNameOfGroups: LiveData<List<String>> get() = _allNameOfGroups
+
+    private var _noteUi: MutableLiveData<NoteUi> = MutableLiveData()
+    val noteUi: LiveData<NoteUi> get() = _noteUi
 
     fun getNoteById(id: Int) {
-        interactor.getNoteById(id)
-            .map(::mapItemToNoteUI)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { _noteUi.value = it },
-                { Log.d("lo", "getNoteById: ${it.message}") })
-    }
-
-    fun addNote(noteEntity: NoteEntity) {
-        interactor
-            .addNote(noteEntity)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+        viewModelScope.launch(Dispatchers.Main) {
+            notesInteractor.getNoteByIdFlow(id = id)
+                .map(::mapItemToNoteUI)
+                .collect { note -> _noteUi.value = note }
+        }
     }
 
     fun updateNote(noteEntity: NoteEntity) {
-        interactor
-            .updateNote(noteEntity)
+        notesInteractor.updateNote(noteEntity)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
     }
 
     fun getAllNameOfGroups() {
-        interactor.getAllNotesWithNameGroup()
+        notesInteractor.getAllNotesWithNameGroup()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _allNameOfGroups.value = it

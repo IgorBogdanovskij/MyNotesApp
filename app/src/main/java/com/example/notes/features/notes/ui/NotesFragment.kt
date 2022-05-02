@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
-import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentNotesBinding
-import com.example.notes.databinding.GroupItemBinding
 import com.example.notes.di.Injector
 import com.example.notes.features.notes.commands.*
 import com.example.notes.features.notes.presentation.NotesViewModel
@@ -86,13 +84,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
             findNavController().navigate(R.id.action_notesFragment_to_notesFragmentWrite)
         }
         fragmentNotesBinding.includeDrawer.linearAllNote.setOnClickListener {
-            executeCommand(
-                ShowAllNotesCommand(
-                    fragmentNotesBinding,
-                    notesViewModel,
-                    it
-                )
-            )
+            executeCommand(ShowAllNotesCommand(fragmentNotesBinding, notesViewModel, it))
         }
     }
 
@@ -101,7 +93,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
             viewLifecycleOwner,
             NotesUiHandler(fragmentNotesBinding, notesAdapter)::handle
         )
-        notesViewModel.noteEntity.observe(viewLifecycleOwner) {
+        notesViewModel.noteUi.observe(viewLifecycleOwner) {
             noteUi = it
         }
 
@@ -150,13 +142,13 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         findNavController().navigate(R.id.noteDetailsFragment, bundleOf(NOTE_ID to noteUi.id))
     }
 
-    override fun onNoteLongClick(view: View) {
-        executeCommand(NoteLongClickCommand(popupMenu, view, requireContext()))
-        popupMenu?.setOnMenuItemClickListener(this)
+    override fun onNoteLongClick(view: View, noteUi: NoteUi) {
+        this.noteUi = noteUi
+        executeCommand(NoteLongClickCommand(popupMenu, view, requireContext(), this))
     }
 
     override fun onSwipe(position: Int) {
-        executeCommand(SwipeToShowSnackBarCommand(notesAdapter, this, notesViewModel, position))
+        executeCommand(DeleteNoteBySwipeCommand(notesAdapter, this, notesViewModel, position))
     }
 
     override fun onMove(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
@@ -173,7 +165,13 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
         executeCommand(
-            PopupMenuItemClickCommand(item.itemId, findNavController(), notesViewModel, noteUi?.id)
+            PopupMenuItemClickCommand(
+                item.itemId,
+                findNavController(),
+                notesViewModel,
+                noteUi,
+                this
+            )
         )
         return true
     }

@@ -18,9 +18,5 @@ class NoteDetailsModule {
         @IntoMap
         @ViewModelKey(NoteDetailsViewModel::class)
         fun bindNoteDetailsViewModel(viewModel: NoteDetailsViewModel): ViewModel
-
-        @Binds
-        @NoteDetailsScope
-        fun bindNotesInteractor(notesInteractorImp: NotesInteractorImp): NotesInteractor
     }
 }

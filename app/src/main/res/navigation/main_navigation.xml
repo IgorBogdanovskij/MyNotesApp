@@ -19,7 +19,7 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_listNotesFragment_to_editFragmentKotlin"
-            app:destination="@id/editFragmentKotlin" />
+            app:destination="@id/editFragment" />
     </fragment>
 
     <fragment
@@ -34,8 +34,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/editFragmentKotlin"
-        android:name="com.example.notes.features.edit.EditFragmentKotlin"
+        android:id="@+id/editFragment"
+        android:name="com.example.notes.features.edit.ui.EditFragment"
         android:label="EditFragmentKotlin"
         tools:layout="@layout/fragment_edit" />
 </navigation>

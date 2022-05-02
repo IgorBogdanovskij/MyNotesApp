@@ -9,7 +9,7 @@ import com.example.notes.mappers.mapToNoteEntity
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
-class SwipeToShowSnackBarCommand(
+class DeleteNoteBySwipeCommand(
     private val notesAdapter: NotesAdapter,
     private val notesFragment: NotesFragment,
     private val notesViewModel: NotesViewModel,

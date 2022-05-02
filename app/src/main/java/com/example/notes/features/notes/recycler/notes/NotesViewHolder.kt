@@ -16,7 +16,10 @@ class NotesViewHolder(
             onNoteClickListener.onNoteClick(itemByPositionCallback(adapterPosition))
         }
         itemNotesBinding.root.setOnLongClickListener {
-            onNoteClickListener.onNoteLongClick(itemNotesBinding.root)
+            onNoteClickListener.onNoteLongClick(
+                itemNotesBinding.root,
+                itemByPositionCallback(adapterPosition)
+            )
             return@setOnLongClickListener true
         }
     }

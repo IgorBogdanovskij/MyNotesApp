@@ -12,15 +12,8 @@ class CreateNoteCommand(
 ) : Command {
 
     override fun execute() {
-        var nameGroup = ""
-        if (viewBinding.editTextTitle.text.toString().isNotEmpty() &&
-            viewBinding.editTextTextDescription.text.toString().isNotEmpty()
-        ) {
-            if (viewBinding.autoCompleteTextViewWrite.text.toString().isNotEmpty()) {
-                nameGroup = viewBinding.autoCompleteTextViewWrite.text.toString()
-            }
-            createAndAddNote(nameGroup)
-        }
+        val group = viewBinding.autoCompleteTextViewWrite.text.toString()
+        createAndAddNote(group)
     }
 
     private fun createAndAddNote(nameGroup: String) {

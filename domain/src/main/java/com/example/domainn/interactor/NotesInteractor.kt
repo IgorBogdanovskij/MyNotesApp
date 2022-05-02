@@ -4,6 +4,7 @@ import com.example.domainn.entity.NoteEntity
 import com.example.domainn.repository.NotesRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface NotesInteractor {
@@ -14,6 +15,8 @@ interface NotesInteractor {
     fun getAllNotesWithNameGroup(): Single<List<String>>
 
     fun getNoteById(id: Int): Single<NoteEntity>
+
+    fun getNoteByIdFlow(id: Int): Flow<NoteEntity>
 
     fun addNote(noteEntity: NoteEntity): Completable
 
@@ -39,6 +42,10 @@ class NotesInteractorImp @Inject constructor(private val repository: NotesReposi
 
     override fun getNoteById(id: Int): Single<NoteEntity> {
         return repository.getNoteById(id)
+    }
+
+    override fun getNoteByIdFlow(id: Int): Flow<NoteEntity> {
+        return repository.getNoteByIdFlow(id)
     }
 
     override fun addNote(noteEntity: NoteEntity): Completable {

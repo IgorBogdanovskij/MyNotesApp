@@ -8,9 +8,4 @@
         android:icon="@drawable/ic_baseline_save_24"
         app:showAsAction="always"
         android:title="" />
-
-
-
-
-
 </menu>

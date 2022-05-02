@@ -5,7 +5,10 @@ import androidx.room.Room
 import com.example.data.local.dao.NoteDao
 import com.example.data.local.database.DataBase
 import com.example.data.repository.NotesRepositoryImp
+import com.example.domainn.interactor.NotesInteractor
+import com.example.domainn.interactor.NotesInteractorImp
 import com.example.domainn.repository.NotesRepository
+import com.example.notes.features.edit.di.EditScope
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -37,5 +40,9 @@ class DataModule {
         @Binds
         @Singleton
         fun bindNoteRepository(notesRepositoryImp: NotesRepositoryImp): NotesRepository
+
+        @Binds
+        @Singleton
+        fun bindNotesInteractor(notesInteractorImp: NotesInteractorImp): NotesInteractor
     }
 }

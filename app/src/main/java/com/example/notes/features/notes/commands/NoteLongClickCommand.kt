@@ -9,15 +9,14 @@ import com.example.notes.R
 class NoteLongClickCommand(
     private var popupMenu: PopupMenu?,
     private val view: View,
-    private val context: Context
-) : Command {
+    private val context: Context,
+    private val listener: PopupMenu.OnMenuItemClickListener,
+    ) : Command {
 
     override fun execute() {
         popupMenu = PopupMenu(context, view)
-        popupMenu?.menuInflater?.inflate(
-            R.menu.popup_menu_drawer,
-            popupMenu!!.menu
-        )
+        popupMenu?.setOnMenuItemClickListener(listener)
+        popupMenu?.menuInflater?.inflate(R.menu.popup_menu_drawer, popupMenu!!.menu)
         popupMenu?.show()
     }
 }

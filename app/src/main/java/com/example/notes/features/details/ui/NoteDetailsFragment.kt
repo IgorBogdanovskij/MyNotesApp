@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +25,7 @@ import javax.inject.Inject
 class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
 
     private var noteId: Int = 0
-    private lateinit var noteUi: NoteUi
+    private var noteUi: NoteUi? = null
     private lateinit var viewBinding: FragmentNoteDetailsBinding
 
     @Inject
@@ -69,9 +70,10 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
         }
     }
 
+    //не успевает загрузиться заметка (ассинхронность)
     private fun setupData() {
-        viewModel.getAllNameOfGroups()
         viewModel.getNoteById(noteId)
+        viewModel.getAllNameOfGroups()
     }
 
     private fun initObservers() {
@@ -86,14 +88,21 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
     }
 
     private fun setupFragment() {
-        viewBinding.editTextTitle.setText(noteUi.title)
-        viewBinding.editTextTextDescription.setText(noteUi.description)
+        viewBinding.editTextTitle.setText(noteUi?.title)
+        viewBinding.editTextTextDescription.setText(noteUi?.description)
+
     }
 
     private fun setListInAutoCompleteText(list: List<String>) {
         val mArrayAdapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list);
         viewBinding.autoCompleteTextViewWrite.setAdapter(mArrayAdapter);
+
+        list.find { noteUi?.nameGroup == it }?.let {
+            viewBinding.autoCompleteTextViewWrite.setText(
+                mArrayAdapter.getItem(mArrayAdapter.getPosition(it)), false
+            )
+        }
     }
 
     override fun onStop() {

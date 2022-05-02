@@ -1,6 +1,5 @@
 package com.example.notes.features.notes.presentation
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +31,7 @@ class NotesViewModel @Inject constructor(
         get() = _allNameOfGroups
 
     private var _noteEntity: MutableLiveData<NoteUi> = MutableLiveData()
-    val noteEntity: LiveData<NoteUi>
+    val noteUi: LiveData<NoteUi>
         get() = _noteEntity
 
     fun getAllNotes() {
@@ -73,7 +72,7 @@ class NotesViewModel @Inject constructor(
             .subscribe()
     }
 
-    fun updateNote(noteEntity: NoteEntity) {
+    private fun updateNote(noteEntity: NoteEntity) {
         interactor
             .updateNote(noteEntity)
             .observeOn(AndroidSchedulers.mainThread())

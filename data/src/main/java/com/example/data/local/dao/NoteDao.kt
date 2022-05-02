@@ -7,6 +7,8 @@ import androidx.room.Update
 import com.example.domainn.entity.NoteEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 @Dao
 interface NoteDao {
@@ -22,6 +24,9 @@ interface NoteDao {
 
     @Query("SELECT * FROM notes_table WHERE id == :id")
     fun getNoteById(id: Int): Single<NoteEntity>
+
+    @Query("SELECT * FROM notes_table WHERE id == :id")
+    fun getNoteByIdFlow(id: Int): Flow<NoteEntity>
 
     @Insert
     fun addNote(noteEntity: NoteEntity): Completable

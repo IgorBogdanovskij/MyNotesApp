@@ -5,5 +5,5 @@ import com.example.notes.models.NoteUi
 
 interface OnNoteClickListener {
     fun onNoteClick(noteUi: NoteUi)
-    fun onNoteLongClick(view: View)
+    fun onNoteLongClick(view: View, noteUi: NoteUi)
 }
