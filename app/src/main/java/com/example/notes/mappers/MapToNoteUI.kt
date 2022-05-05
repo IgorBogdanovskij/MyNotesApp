@@ -15,7 +15,7 @@ fun mapListToNoteUI(list:List<NoteEntity>): List<NoteUi> {
             colorBackground = it.colorBackground,
             colorText = it.colorText,
             data = it.data,
-            nameGroup = it.nameGroup
+            group = it.nameGroup
         ))
     }
 
@@ -29,6 +29,6 @@ fun mapItemToNoteUI(noteEntity: NoteEntity) = NoteUi(
     colorBackground = noteEntity.colorBackground,
     colorText = noteEntity.colorText,
     data = noteEntity.data,
-    nameGroup = noteEntity.nameGroup
+    group = noteEntity.nameGroup
 )
 

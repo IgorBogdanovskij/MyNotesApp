@@ -49,7 +49,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initState()
+        initData()
         initListeners()
         initObservers()
     }
@@ -68,16 +68,15 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         }
     }
 
-    private fun initState() {
+    private fun initData() {
         viewModel.getNoteById(noteId)
         viewModel.getAllNameOfGroups()
-
-        colorPicker = SimpleColorPicker(viewBinding)
     }
 
     private fun initObservers() {
         viewModel.noteUi.observe(viewLifecycleOwner) { note ->
             noteUi = note
+            colorPicker = SimpleColorPicker(viewBinding, noteUi)
         }
 
         viewModel.allNameOfGroups.observe(viewLifecycleOwner) {
@@ -90,7 +89,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list);
         viewBinding.autoCompleteTextViewEditScreen.setAdapter(mArrayAdapter);
 
-        list.find { noteUi.nameGroup == it }?.let {
+        list.find { noteUi.group == it }?.let {
             viewBinding.autoCompleteTextViewEditScreen.setText(
                 mArrayAdapter.getItem(mArrayAdapter.getPosition(it)), false
             )

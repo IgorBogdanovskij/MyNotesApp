@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.notes.R
-import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentNoteDetailsBinding
 import com.example.notes.di.Injector
 import com.example.notes.features.details.commands.ApplyChangesCommand
@@ -98,7 +96,7 @@ class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list);
         viewBinding.autoCompleteTextViewWrite.setAdapter(mArrayAdapter);
 
-        list.find { noteUi?.nameGroup == it }?.let {
+        list.find { noteUi?.group == it }?.let {
             viewBinding.autoCompleteTextViewWrite.setText(
                 mArrayAdapter.getItem(mArrayAdapter.getPosition(it)), false
             )

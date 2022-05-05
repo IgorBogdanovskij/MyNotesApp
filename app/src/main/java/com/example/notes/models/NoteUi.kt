@@ -9,5 +9,5 @@ data class NoteUi(
     var colorBackground: Int = 0,
     var colorText: Int = 0,
     var data: Date = Date(),
-    var nameGroup: String = "",
+    var group: String = "",
 )

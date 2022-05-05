@@ -2,15 +2,19 @@ package com.example.notes.features.notes.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -43,10 +47,12 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     lateinit var adapterListGroups: GroupsAdapter
 
     private var popupMenu: PopupMenu? = null
-    private lateinit var onSetSupportActionBarCallback: OnSetSupportActionBarCallback
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private var noteUi: NoteUi? = null
+
+    private lateinit var onSetSupportActionBarCallback: OnSetSupportActionBarCallback
+    private lateinit var onChangeTheme: OnChangeTheme
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -56,6 +62,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         super.onAttach(context)
         Injector.inject(this)
         onSetSupportActionBarCallback = context as OnSetSupportActionBarCallback
+        onChangeTheme = context as OnChangeTheme
     }
 
     override fun onCreateView(
@@ -70,6 +77,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         super.onViewCreated(view, savedInstanceState)
         onSetSupportActionBarCallback.onEvent(fragmentNotesBinding.toolbarNotesScreen)
 
+        setupTheme(notesViewModel.checkLightTheme())
         setupNavigationView()
         setupNotesAdapter()
         setupGroupsAdapter()
@@ -79,12 +87,35 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         initListeners()
     }
 
+    private fun setupTheme(value: Boolean) {
+        if (value) {
+            fragmentNotesBinding.includeDrawer.dayNightMode.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_light_mode_black_24dp
+                )
+            )
+        } else {
+            fragmentNotesBinding.includeDrawer.dayNightMode.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_mode_night_black_24dp
+                )
+            )
+        }
+        notesViewModel.putBoolean(value)
+        onChangeTheme.onChange(value)
+    }
+
     private fun initListeners() {
         fragmentNotesBinding.floatingButtonNotes.setOnClickListener {
             findNavController().navigate(R.id.action_notesFragment_to_notesFragmentWrite)
         }
         fragmentNotesBinding.includeDrawer.linearAllNote.setOnClickListener {
             executeCommand(ShowAllNotesCommand(fragmentNotesBinding, notesViewModel, it))
+        }
+        fragmentNotesBinding.includeDrawer.dayNightMode.setOnClickListener {
+            setupTheme(!notesViewModel.checkLightTheme())
         }
     }
 
@@ -135,7 +166,10 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         navController = findNavController()
         appBarConfiguration =
             AppBarConfiguration(navController.graph, fragmentNotesBinding.drawerLayout)
-        fragmentNotesBinding.toolbarNotesScreen.setupWithNavController(navController, appBarConfiguration)
+        fragmentNotesBinding.toolbarNotesScreen.setupWithNavController(
+            navController,
+            appBarConfiguration
+        )
     }
 
     override fun onNoteClick(noteUi: NoteUi) {

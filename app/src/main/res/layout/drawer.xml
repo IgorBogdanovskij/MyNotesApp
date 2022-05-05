@@ -27,9 +27,7 @@
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/ic_pero_good"
-
-                />
+                android:background="@drawable/ic_pero_good" />
 
             <TextView
                 android:id="@+id/textView"
@@ -37,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Your Notes"
-                android:textSize="30dp"
+                android:text="@string/your_notes"
+                android:textSize="30sp"
                 android:textStyle="italic" />
         </LinearLayout>
 
@@ -183,19 +181,17 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
-
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/ic_baseline_settings_24" />
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="Settings"
+                android:layout_marginStart="10dp"
+                android:text="@string/settings"
                 android:textSize="20dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -207,6 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_light_mode_black_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

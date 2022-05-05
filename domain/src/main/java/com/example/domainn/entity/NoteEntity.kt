@@ -20,4 +20,3 @@ data class NoteEntity(
         const val NAME_TABLE = "notes_table"
     }
 }
-

@@ -25,4 +25,15 @@
     <color name="grey">#bdbdbd</color>
     <color name="blue_grey">#90a4ae</color>
     <color name="errorItemTextView">#FF6200EE</color>
+
+
+
+    <color name="primary">#fafafa</color>
+    <color name="primaryLight">#ffffff</color>
+    <color name="primaryDark">#c7c7c7</color>
+    <color name="onPrimary">#606060</color>
+    <color name="secondary">#dce775</color>
+    <color name="secondaryLight">#ffffa6</color>
+    <color name="secondaryDark">#a8b545</color>
+    <color name="onSecondary">#fff9c4</color>
 </resources>

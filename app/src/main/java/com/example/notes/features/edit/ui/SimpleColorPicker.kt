@@ -6,8 +6,12 @@ import android.widget.ImageView
 import androidx.core.view.children
 import com.example.notes.R
 import com.example.notes.databinding.FragmentEditBinding
+import com.example.notes.models.NoteUi
 
-class SimpleColorPicker(private val binding: FragmentEditBinding) : ColorPicker {
+class SimpleColorPicker(
+    private val binding: FragmentEditBinding,
+    private val noteUi: NoteUi
+) : ColorPicker {
 
     private var selectedColor = 0
 
@@ -45,12 +49,16 @@ class SimpleColorPicker(private val binding: FragmentEditBinding) : ColorPicker 
                 }
             }
             itemColor.setColorFilter(binding.root.resources.getColor(colors[index], null))
+            checkCurrentNoteUiColor(index, itemCheckColor)
             binding.containerColorsEditScreen.addView(placeHolderColor)
         }
     }
 
-    override fun setColor(color: Int) {
-        selectedColor = color
+    private fun checkCurrentNoteUiColor(index: Int, itemCheckColor: ImageView) {
+        if (colors[index] == noteUi.colorBackground){
+            itemCheckColor.visibility = View.VISIBLE
+            selectedColor = noteUi.colorBackground
+        }
     }
 
     override fun getColor(): Int {

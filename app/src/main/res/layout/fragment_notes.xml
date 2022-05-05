@@ -42,7 +42,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:elevation="6dp"
-                app:backgroundTint="?colorPrimaryDark"
                 app:icon="@drawable/ic_plus"
                 app:iconTint="?colorPrimary"
                 app:layout_constraintBottom_toBottomOf="@+id/notesRecyclerView"
@@ -53,7 +52,6 @@
                 android:id="@+id/appBarLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -66,7 +64,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:menu="@menu/main_menu"
                     app:title="Notes">
 
                 </com.google.android.material.appbar.MaterialToolbar>

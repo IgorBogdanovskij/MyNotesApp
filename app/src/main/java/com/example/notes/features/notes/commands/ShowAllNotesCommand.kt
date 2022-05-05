@@ -2,7 +2,6 @@ package com.example.notes.features.notes.commands
 
 import android.view.View
 import androidx.core.view.allViews
-import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
 import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentNotesBinding
@@ -17,7 +16,7 @@ class ShowAllNotesCommand(
     override fun execute() {
         fragmentNotesBinding.includeDrawer.root.allViews.forEach {
             if (view == it) {
-                view.setBackgroundResource(R.drawable.select_item)
+                view.setBackgroundResource(R.drawable.select_group_background)
             } else {
                 it.invalidate()
             }

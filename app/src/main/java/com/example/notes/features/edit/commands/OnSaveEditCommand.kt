@@ -1,7 +1,5 @@
 package com.example.notes.features.edit.commands
 
-import android.util.Log
-import android.widget.Toast
 import androidx.navigation.NavController
 import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentEditBinding
@@ -18,9 +16,11 @@ class OnSaveEditCommand(
     private val noteUi: NoteUi
 ) : Command {
 
-    // TODO: correct popBackStack with save new state 
     override fun execute() {
-        val updatedNoteUi = noteUi.copy(colorBackground = colorPicker.getColor())
+        val updatedNoteUi = noteUi.copy(
+            colorBackground = colorPicker.getColor(),
+            group = viewBinding.autoCompleteTextViewEditScreen.text.toString()
+        )
         viewModel.updateNote(mapToNoteEntity(updatedNoteUi))
         navController.popBackStack()
     }

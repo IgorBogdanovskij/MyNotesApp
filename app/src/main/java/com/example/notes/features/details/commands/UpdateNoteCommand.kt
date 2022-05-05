@@ -40,7 +40,7 @@ class UpdateNoteCommand(
 
     private fun updateGroup(newGroup: String, newNote: NoteUi) {
         if (newGroup.isNotEmpty()) {
-            newNote.nameGroup = newGroup
+            newNote.group = newGroup
         }
     }
 

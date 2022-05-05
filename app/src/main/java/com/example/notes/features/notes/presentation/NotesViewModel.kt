@@ -4,18 +4,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domainn.entity.NoteEntity
 import com.example.domainn.interactor.NotesInteractor
+import com.example.domainn.interactor.SharedPreferencesInteractor
 import com.example.notes.mappers.mapItemToNoteUI
 import com.example.notes.mappers.mapListToNoteUI
 import com.example.notes.models.NoteUi
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
 class NotesViewModel @Inject constructor(
     private val interactor: NotesInteractor,
+    private val sharedPreferencesInteractor: SharedPreferencesInteractor
 ) : ViewModel() {
 
     private var _allNotes: MutableLiveData<State> = MutableLiveData()
@@ -88,13 +95,9 @@ class NotesViewModel @Inject constructor(
         val dataTo: Date = noteEntityTo.data;
 
         if (dataFrom.toString() != dataTo.toString()) {
-
             noteEntityFrom.data = dataTo;
-
             updateNote(noteEntityFrom);
-
             noteEntityTo.data = dataFrom;
-
             updateNote(noteEntityTo);
         }
     }
@@ -129,5 +132,15 @@ class NotesViewModel @Inject constructor(
             }, {
                 Log.d("lo", "getNoteById: ${it.message}")
             })
+    }
+
+    fun checkLightTheme(): Boolean {
+        return runBlocking { sharedPreferencesInteractor.checkLightTheme() }
+    }
+
+    fun putBoolean(lightTheme: Boolean) {
+        viewModelScope.launch {
+            sharedPreferencesInteractor.putBoolean(lightTheme)
+        }
     }
 }
