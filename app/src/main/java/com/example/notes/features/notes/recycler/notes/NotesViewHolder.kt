@@ -1,10 +1,14 @@
 package com.example.notes.features.notes.recycler.notes
 
+import android.content.res.Configuration
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.notes.R
 import com.example.notes.databinding.NoteItemBinding
 import com.example.notes.models.NoteUi
+import java.lang.IllegalStateException
 
 class NotesViewHolder(
     private val itemNotesBinding: NoteItemBinding,
@@ -31,6 +35,20 @@ class NotesViewHolder(
         if (noteUi.colorBackground != 0) {
             itemNotesBinding.cardViewForNote.setCardBackgroundColor(
                 ContextCompat.getColor(itemNotesBinding.root.context, noteUi.colorBackground)
+            )
+        } else {
+            val cardBackgroundColor =
+                when (itemNotesBinding.root.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                    Configuration.UI_MODE_NIGHT_YES -> R.color.cardview_dark_background
+                    Configuration.UI_MODE_NIGHT_NO -> R.color.cardview_light_background
+                    Configuration.UI_MODE_NIGHT_UNDEFINED -> R.color.blue
+                    else -> throw IllegalStateException()
+                }
+            itemNotesBinding.cardViewForNote.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    itemNotesBinding.root.context,
+                    cardBackgroundColor
+                )
             )
         }
         if (noteUi.group.isEmpty()) {

@@ -11,12 +11,12 @@ class NoteLongClickCommand(
     private val view: View,
     private val context: Context,
     private val listener: PopupMenu.OnMenuItemClickListener,
-    ) : Command {
+) : Command {
 
     override fun execute() {
         popupMenu = PopupMenu(context, view)
         popupMenu?.setOnMenuItemClickListener(listener)
-        popupMenu?.menuInflater?.inflate(R.menu.popup_menu_drawer, popupMenu!!.menu)
+        popupMenu?.menuInflater?.inflate(R.menu.popup_menu, popupMenu!!.menu)
         popupMenu?.show()
     }
 }

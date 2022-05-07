@@ -143,4 +143,14 @@ class NotesViewModel @Inject constructor(
             sharedPreferencesInteractor.putBoolean(lightTheme)
         }
     }
+
+    fun putString(value: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            sharedPreferencesInteractor.putString(value)
+        }
+    }
+
+    fun checkLayoutManager(): String {
+        return runBlocking { sharedPreferencesInteractor.checkLayoutManager() }
+    }
 }

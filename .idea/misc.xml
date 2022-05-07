@@ -24,6 +24,8 @@
         <entry key="..\:/Notes/app/src/main/res/layout/fragment_edit.xml" value="0.25025641025641027" />
         <entry key="..\:/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.16111111111111112" />
         <entry key="..\:/Notes/app/src/main/res/layout/fragment_notes_write.xml" value="0.25416666666666665" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-anydpi/ic_grid.xml" value="0.2475" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-anydpi/ic_rows.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.125" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-v24/oval.xml" value="0.113" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1" />
@@ -45,6 +47,7 @@
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_post_it.xml" value="0.125" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_stickynotesnorm.xml" value="0.125" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_group.xml" value="0.2115" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_group_background.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_group_light.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_item.xml" value="0.2115" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/stroke_for_note.xml" value="0.125" />
@@ -57,7 +60,7 @@
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/empty_list_notes_element.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_edit.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_note_details.xml" value="0.12037037037037036" />
-        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes_write.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/group_item.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/item_drawer_adapter.xml" value="0.24010416666666667" />
