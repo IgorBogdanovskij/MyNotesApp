@@ -1,28 +1,30 @@
 package com.example.notes.features.notes.ui
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.sharedpref.SharedPreferencesManagerImpl.Companion.GRID
-import com.example.data.sharedpref.SharedPreferencesManagerImpl.Companion.LINEAR
+import com.example.data.sharedPrefManager.SharedPreferencesManagerImpl.Companion.GRID
+import com.example.data.sharedPrefManager.SharedPreferencesManagerImpl.Companion.LINEAR
 import com.example.notes.R
+import com.example.notes.app.OnSetupNavigationViewCallback
+import com.example.notes.app.OnSetupToolbarCallback
+import com.example.notes.app.ToolbarSettings
 import com.example.notes.databinding.FragmentNotesBinding
 import com.example.notes.di.Injector
 import com.example.notes.features.notes.commands.*
@@ -42,17 +44,18 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     PopupMenu.OnMenuItemClickListener,
     OnGroupClickListener {
 
-    private lateinit var fragmentNotesBinding: FragmentNotesBinding
-    lateinit var notesAdapter: NotesAdapter
-    lateinit var adapterListGroups: GroupsAdapter
+    private lateinit var binding: FragmentNotesBinding
+    private lateinit var notesAdapter: NotesAdapter
+    private lateinit var adapterListGroups: GroupsAdapter
 
     private var popupMenu: PopupMenu? = null
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navController: NavController
     private var noteUi: NoteUi? = null
 
-    private lateinit var onSetSupportActionBarCallback: OnSetSupportActionBarCallback
-    private lateinit var onChangeTheme: OnChangeTheme
+    private lateinit var onSetupToolbarCallback: OnSetupToolbarCallback
+    private lateinit var onSetupNavigationViewCallback: OnSetupNavigationViewCallback
+    private lateinit var onChangeThemeCallback: OnChangeThemeCallback
+
+    private var toolbarSettings: ToolbarSettings? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -61,21 +64,22 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Injector.inject(this)
-        onSetSupportActionBarCallback = context as OnSetSupportActionBarCallback
-        onChangeTheme = context as OnChangeTheme
+        onSetupToolbarCallback = context as OnSetupToolbarCallback
+        onSetupNavigationViewCallback = context as OnSetupNavigationViewCallback
+        onChangeThemeCallback = context as OnChangeThemeCallback
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return FragmentNotesBinding.inflate(layoutInflater).also { fragmentNotesBinding = it }.root
+    ): View {
+        initToolbar()
+        return FragmentNotesBinding.inflate(layoutInflater).also { binding = it }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onSetSupportActionBarCallback.onEvent(fragmentNotesBinding.toolbarNotesScreen)
 
         setupTheme(notesViewModel.checkLightTheme())
         setupNavigationView()
@@ -89,14 +93,14 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
 
     private fun setupTheme(value: Boolean) {
         if (value) {
-            fragmentNotesBinding.includeDrawer.dayNightMode.setImageDrawable(
+            binding.includeDrawer.dayNightMode.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
                     R.drawable.ic_light_mode_black_24dp
                 )
             )
         } else {
-            fragmentNotesBinding.includeDrawer.dayNightMode.setImageDrawable(
+            binding.includeDrawer.dayNightMode.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
                     R.drawable.ic_mode_night_black_24dp
@@ -104,38 +108,56 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
             )
         }
         notesViewModel.putBoolean(value)
-        onChangeTheme.onChange(value)
+        onChangeThemeCallback.onChange(value)
     }
 
     private fun initListeners() {
-        fragmentNotesBinding.floatingButtonNotes.setOnClickListener {
-            findNavController().navigate(R.id.action_notesFragment_to_notesFragmentWrite)
-        }
-        fragmentNotesBinding.includeDrawer.linearAllNote.setOnClickListener {
-            executeCommand(
-                ShowNotesByFilterCommand(
-                    notesBinding = fragmentNotesBinding,
-                    notesViewModel = notesViewModel,
-                    filterType = NotesFilterType.ALLNOTES,
-                    view = it
+        with(binding) {
+            createNewNote.setOnClickListener {
+                executeCommand(
+                    OpenCreateNewNoteScreenCommand(
+                        binding = binding,
+                        notesFragment = this@NotesFragment,
+                        toolbarSettings = toolbarSettings,
+                        onSetupToolbarCallback = onSetupToolbarCallback
+                    )
                 )
-            )
-        }
-        fragmentNotesBinding.includeDrawer.dayNightMode.setOnClickListener {
-            setupTheme(!notesViewModel.checkLightTheme())
-        }
-        fragmentNotesBinding.changeLayoutManager.setOnClickListener {
-            when (notesViewModel.checkLayoutManager()) {
-                LINEAR -> setupNotesRecyclerView(GRID)
-                GRID -> setupNotesRecyclerView(LINEAR)
+            }
+            includeDrawer.linearAllNote.setOnClickListener {
+                executeCommand(
+                    ShowNotesByFilterCommand(
+                        notesBinding = binding,
+                        notesViewModel = notesViewModel,
+                        filterType = NotesFilterType.ALLNOTES,
+                        view = it
+                    )
+                )
+            }
+            includeDrawer.dayNightMode.setOnClickListener {
+                setupTheme(!notesViewModel.checkLightTheme())
             }
         }
+    }
+
+    private fun initToolbar() {
+        toolbarSettings = ToolbarSettings(
+            title = getString(R.string.notesFragmentToolbarTitle),
+            isGone = false,
+            backButtonVisibility = false,
+            onChangeLayoutManagerListener = {
+                when (notesViewModel.checkLayoutManager()) {
+                    LINEAR -> setupNotesRecyclerView(GRID)
+                    GRID -> setupNotesRecyclerView(LINEAR)
+                    else -> null
+                }
+            }
+        ).apply { onSetupToolbarCallback.onSetupToolbar(this) }
     }
 
     private fun initObservers() {
         notesViewModel.allNotes.observe(
             viewLifecycleOwner,
-            NotesUiHandler(fragmentNotesBinding, notesAdapter)::handle
+            NotesUiHandler(binding, notesAdapter)::handle
         )
 
         notesViewModel.allNotesByGroup.observe(viewLifecycleOwner) {
@@ -162,43 +184,34 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     }
 
     private fun setupGroupsRecyclerView() {
-        fragmentNotesBinding.includeDrawer.drawerRecyclerView.layoutManager =
+        binding.includeDrawer.drawerRecyclerView.layoutManager =
             LinearLayoutManager(requireContext())
-        fragmentNotesBinding.includeDrawer.drawerRecyclerView.adapter = adapterListGroups
+        binding.includeDrawer.drawerRecyclerView.adapter = adapterListGroups
     }
 
-    private fun setupNotesRecyclerView(typeOfLayoutManager: String) {
-        with(fragmentNotesBinding.notesRecyclerView) {
+    private fun setupNotesRecyclerView(typeOfLayoutManager: String): Drawable? {
+        notesViewModel.putString(typeOfLayoutManager)
+        NotesItemTouchHelper(this).also {
+            ItemTouchHelper(it).attachToRecyclerView(binding.notesRecyclerView)
+        }
+        return with(binding.notesRecyclerView) {
+            adapter = notesAdapter
             when (typeOfLayoutManager) {
                 LINEAR -> {
-                    fragmentNotesBinding.changeLayoutManager.setImageDrawable(
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_rows)
-                    )
                     layoutManager = LinearLayoutManager(requireContext())
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_rows)
                 }
                 GRID -> {
-                    fragmentNotesBinding.changeLayoutManager.setImageDrawable(
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_grid)
-                    )
                     layoutManager = GridLayoutManager(requireContext(), 2)
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_grid)
                 }
+                else -> null
             }
-            adapter = notesAdapter
-            notesViewModel.putString(typeOfLayoutManager)
-        }
-        NotesItemTouchHelper(this).also {
-            ItemTouchHelper(it).attachToRecyclerView(fragmentNotesBinding.notesRecyclerView)
         }
     }
 
     private fun setupNavigationView() {
-        navController = findNavController()
-        appBarConfiguration =
-            AppBarConfiguration(navController.graph, fragmentNotesBinding.drawerLayout)
-        fragmentNotesBinding.toolbarNotesScreen.setupWithNavController(
-            navController,
-            appBarConfiguration
-        )
+        onSetupNavigationViewCallback.onSetupNavigationView(binding.drawerLayout, this)
     }
 
     override fun onNoteClick(noteUi: NoteUi) {
@@ -250,7 +263,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     ) {
         executeCommand(
             ShowNotesByFilterCommand(
-                notesBinding = fragmentNotesBinding,
+                notesBinding = binding,
                 notesViewModel = notesViewModel,
                 filterType = NotesFilterType.NOTESBYGROUP,
                 nameGroup = nameGroup,

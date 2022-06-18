@@ -2,3 +2,4 @@ include ':app'
 rootProject.name = "Notes"
 include ':data'
 include ':domain'
+include ':core'

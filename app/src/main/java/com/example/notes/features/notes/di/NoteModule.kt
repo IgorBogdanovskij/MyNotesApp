@@ -1,10 +1,8 @@
 package com.example.notes.features.notes.di
 
 import androidx.lifecycle.ViewModel
-import com.example.data.sharedpref.SharedPreferencesManagerImpl
-import com.example.domainn.interactor.SharedPreferencesInteractor
-import com.example.domainn.interactor.SharedPreferencesInteractorImpl
-import com.example.domainn.sharedpref.SharedPreferencesManager
+import com.example.data.sharedPrefManager.SharedPreferencesManager
+import com.example.data.sharedPrefManager.SharedPreferencesManagerImpl
 import com.example.notes.di.viewModel.ViewModelKey
 import com.example.notes.features.notes.presentation.NotesViewModel
 import dagger.Binds
@@ -25,9 +23,5 @@ class NoteModule {
         @Binds
         @NotesScope
         fun bindSharedPreferencesManager(sharedPreferencesManagerImpl: SharedPreferencesManagerImpl): SharedPreferencesManager
-
-        @Binds
-        @NotesScope
-        fun bindSharedPreferencesInteractor(sharedPrefInteractorImpl: SharedPreferencesInteractorImpl): SharedPreferencesInteractor
     }
 }

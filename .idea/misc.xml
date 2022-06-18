@@ -28,6 +28,8 @@
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-anydpi/ic_rows.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.125" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable-v24/oval.xml" value="0.113" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/circle.xml" value="0.237" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_arrow_back_white.xml" value="0.2245" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.125" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/ic_baseline_create_24.xml" value="0.125" />
@@ -50,17 +52,19 @@
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_group_background.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_group_light.xml" value="0.1" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/select_item.xml" value="0.2115" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/stroke_for_container_of_colors.xml" value="0.1225" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/drawable/stroke_for_note.xml" value="0.125" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/activity_setting.xml" value="0.24010416666666667" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/app_bar.xml" value="0.39740820734341253" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/category_layout.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/dialog_color_accent.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/dialog_new_group.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/drawer.xml" value="0.264" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/empty_list_notes_element.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_edit.xml" value="0.24010416666666667" />
-        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_note_details.xml" value="0.12037037037037036" />
-        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.1" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_note_details.xml" value="0.33" />
+        <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes.xml" value="0.25263157894736843" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/fragment_notes_write.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/group_item.xml" value="0.24010416666666667" />
         <entry key="..\:/Study/ANDROID/Notes/app/src/main/res/layout/item_drawer_adapter.xml" value="0.24010416666666667" />
@@ -78,7 +82,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="notesFragmentToolbarTitle">Notes</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="empty_list">Empty list</string>
@@ -12,4 +13,5 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="title">Title</string>
+    <string name="defaultResource">default</string>
 </resources>

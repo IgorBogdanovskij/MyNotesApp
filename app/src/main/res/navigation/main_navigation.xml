@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/notesFragment"
         android:name="com.example.notes.features.notes.ui.NotesFragment"
-        android:label="NotesFragment"
         tools:layout="@layout/fragment_notes">
         <action
             android:id="@+id/action_notesFragment_to_notesFragmentWrite"
@@ -25,7 +24,6 @@
     <fragment
         android:id="@+id/noteDetailsFragment"
         android:name="com.example.notes.features.details.ui.NoteDetailsFragment"
-        android:label="NotesDetailsFragment"
         tools:layout="@layout/fragment_note_details">
         <argument
             android:name="noteId"
@@ -36,6 +34,5 @@
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.notes.features.edit.ui.EditFragment"
-        android:label="EditFragmentKotlin"
         tools:layout="@layout/fragment_edit" />
 </navigation>

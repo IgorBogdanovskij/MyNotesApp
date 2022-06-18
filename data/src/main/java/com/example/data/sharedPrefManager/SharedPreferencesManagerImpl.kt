@@ -1,9 +1,7 @@
-package com.example.data.sharedpref
+package com.example.data.sharedPrefManager
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import com.example.domainn.sharedpref.SharedPreferencesManager
 import javax.inject.Inject
 
 class SharedPreferencesManagerImpl @Inject constructor(
@@ -23,11 +21,11 @@ class SharedPreferencesManagerImpl @Inject constructor(
         sharedPreferencesEditor.putString(LAYOUT_MANAGER, value).commit()
     }
 
-    override suspend fun checkLightTheme(): Boolean {
+    override suspend fun getBoolean(): Boolean {
         return sharedPreferences.getBoolean(BOOLEAN_THEME, true)
     }
 
-    override suspend fun checkLayoutManager(): String {
+    override suspend fun getString(): String {
         return sharedPreferences.getString(LAYOUT_MANAGER, LINEAR) ?: LINEAR
     }
 

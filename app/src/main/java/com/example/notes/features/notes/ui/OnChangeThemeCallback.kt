@@ -1,5 +1,5 @@
 package com.example.notes.features.notes.ui
 
-interface OnChangeTheme {
+interface OnChangeThemeCallback {
     fun onChange(value: Boolean)
 }

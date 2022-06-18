@@ -5,23 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarEditScreen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbarEditScreen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:title="Edit" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutEditScreen"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -34,7 +17,7 @@
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarEditScreen"
+        app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_baseline_folder_open_24"
         app:startIconTint="?android:textColorSecondary"
         tools:ignore="MissingConstraints">
@@ -47,8 +30,8 @@
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="-5dp"
             tools:layout_editor_absoluteY="160dp" />
-    </com.google.android.material.textfield.TextInputLayout>
 
+    </com.google.android.material.textfield.TextInputLayout>
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewEditScreen"
@@ -67,8 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-        </LinearLayout>
+            android:orientation="horizontal"></LinearLayout>
+
     </HorizontalScrollView>
 
     <com.google.android.material.button.MaterialButton
