@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.core.base.BaseFragment
+import com.example.core.model.ToolbarSettings
 import com.example.notes.R
 import com.example.notes.databinding.FragmentNoteDetailsBinding
 import com.example.notes.di.Injector
@@ -20,87 +22,71 @@ import com.example.notes.models.NoteUi
 import com.example.notes.utility.executeCommand
 import javax.inject.Inject
 
-class NoteDetailsFragment : Fragment(R.layout.fragment_note_details) {
+class NoteDetailsFragment :
+    BaseFragment<NoteDetailsViewModel, FragmentNoteDetailsBinding>(FragmentNoteDetailsBinding::inflate) {
 
-    private var noteId: Int = 0
     private var noteUi: NoteUi? = null
-    private lateinit var viewBinding: FragmentNoteDetailsBinding
+    private val noteId: Int by lazy { requireArguments().getInt(NotesFragment.NOTE_ID) }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<NoteDetailsViewModel> { viewModelFactory }
+    override val viewModel by viewModels<NoteDetailsViewModel> { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Injector.inject(this)
-        noteId = requireArguments().getInt(NotesFragment.NOTE_ID)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        viewBinding = FragmentNoteDetailsBinding.inflate(inflater)
-        return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupData()
-        initObservers()
         initListeners()
     }
 
     private fun initListeners() {
-        viewBinding.applyChanges.setOnClickListener {
+        binding.applyChanges.setOnClickListener {
             executeCommand(
                 ApplyChangesCommand(
-                    noteId,
-                    noteUi,
-                    requireContext(),
-                    findNavController(),
-                    viewModel,
-                    viewBinding
+                    noteId = noteId,
+                    noteUi = noteUi,
+                    navController = findNavController(),
+                    viewModel = viewModel,
+                    viewBinding = binding
                 )
             )
         }
     }
 
-    //не успевает загрузиться заметка (ассинхронность)
     private fun setupData() {
         viewModel.getNoteById(noteId)
         viewModel.getAllNameOfGroups()
     }
 
-    private fun initObservers() {
-        viewModel.noteUi.observe(viewLifecycleOwner) {
-            noteUi = it
-            setupFragment()
-        }
-
-        viewModel.allNameOfGroups.observe(viewLifecycleOwner) {
-            setListInAutoCompleteText(it.toList())
-        }
-    }
-
-    private fun setupFragment() {
-        viewBinding.editTextTitle.setText(noteUi?.title)
-        viewBinding.editTextTextDescription.setText(noteUi?.description)
-
-    }
-
     private fun setListInAutoCompleteText(list: List<String>) {
         val mArrayAdapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list);
-        viewBinding.autoCompleteTextViewWrite.setAdapter(mArrayAdapter);
+        binding.autoCompleteTextViewWrite.setAdapter(mArrayAdapter);
 
         list.find { noteUi?.group == it }?.let {
-            viewBinding.autoCompleteTextViewWrite.setText(
+            binding.autoCompleteTextViewWrite.setText(
                 mArrayAdapter.getItem(mArrayAdapter.getPosition(it)), false
             )
         }
+    }
+
+    private fun renderUi(noteUi: NoteUi) {
+        this.noteUi = noteUi
+        binding.editTextTitle.setText(noteUi.title)
+        binding.editTextTextDescription.setText(noteUi.description)
+    }
+
+    override fun onBindViewModel(viewModel: NoteDetailsViewModel) {
+        viewModel.noteUi.observe(viewLifecycleOwner, this::renderUi)
+        viewModel.allNameOfGroups.observe(viewLifecycleOwner) { setListInAutoCompleteText(it.toList()) }
+    }
+
+    override fun onBindToolbar(settings: ToolbarSettings) {
+        toolbarSettings = settings.copy(isGone = true)
     }
 
     override fun onStop() {

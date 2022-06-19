@@ -5,12 +5,14 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.core.base.OnSetupNavigationViewCallback
+import com.example.core.base.OnSetupToolbarCallback
+import com.example.core.model.ToolbarSettings
 import com.example.notes.databinding.ActivityMainBinding
-import com.example.notes.features.notes.ui.NotesFragment
-import com.example.notes.features.notes.ui.OnChangeThemeCallback
+import com.example.core.base.OnChangeThemeCallback
 import com.example.core.extension.view.setGone
 
 class MainActivity :
@@ -46,8 +48,8 @@ class MainActivity :
         }
     }
 
-    override fun onSetupNavigationView(drawerLayout: DrawerLayout, fragment: NotesFragment) {
-        val navController = fragment.findNavController()
+    override fun onSetupNavigationView(drawerLayout: DrawerLayout, block: () -> NavController) {
+        val navController = block()
         val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         binding.includeAppBar.toolbar.setupWithNavController(navController, appBarConfiguration)
     }

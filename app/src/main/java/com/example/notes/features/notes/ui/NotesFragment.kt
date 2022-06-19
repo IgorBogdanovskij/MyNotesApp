@@ -3,15 +3,11 @@ package com.example.notes.features.notes.ui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,12 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.core.base.BaseFragment
+import com.example.core.base.OnChangeThemeCallback
 import com.example.data.sharedPrefManager.SharedPreferencesManagerImpl.Companion.GRID
 import com.example.data.sharedPrefManager.SharedPreferencesManagerImpl.Companion.LINEAR
 import com.example.notes.R
-import com.example.notes.app.OnSetupNavigationViewCallback
-import com.example.notes.app.OnSetupToolbarCallback
-import com.example.notes.app.ToolbarSettings
+import com.example.core.base.OnSetupNavigationViewCallback
+import com.example.core.base.OnSetupToolbarCallback
+import com.example.core.model.ToolbarSettings
 import com.example.notes.databinding.FragmentNotesBinding
 import com.example.notes.di.Injector
 import com.example.notes.features.notes.commands.*
@@ -38,15 +36,19 @@ import com.example.notes.models.NoteUi
 import com.example.notes.utility.executeCommand
 import javax.inject.Inject
 
-class NotesFragment : Fragment(R.layout.fragment_notes),
+class NotesFragment :
+    BaseFragment<NotesViewModel, FragmentNotesBinding>(FragmentNotesBinding::inflate),
     OnNoteClickListener,
     NotesItemTouchHelper.NotesItemTouchHelperCallback,
     PopupMenu.OnMenuItemClickListener,
     OnGroupClickListener {
 
-    private lateinit var binding: FragmentNotesBinding
-    private lateinit var notesAdapter: NotesAdapter
-    private lateinit var adapterListGroups: GroupsAdapter
+    companion object {
+        const val NOTE_ID = "NOTE_ID"
+    }
+
+    private val notesAdapter = NotesAdapter(this)
+    private val adapterListGroups = GroupsAdapter(this)
 
     private var popupMenu: PopupMenu? = null
     private var noteUi: NoteUi? = null
@@ -55,11 +57,9 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     private lateinit var onSetupNavigationViewCallback: OnSetupNavigationViewCallback
     private lateinit var onChangeThemeCallback: OnChangeThemeCallback
 
-    private var toolbarSettings: ToolbarSettings? = null
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val notesViewModel by viewModels<NotesViewModel> { viewModelFactory }
+    override val viewModel: NotesViewModel by viewModels { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -69,45 +69,26 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         onChangeThemeCallback = context as OnChangeThemeCallback
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        initToolbar()
-        return FragmentNotesBinding.inflate(layoutInflater).also { binding = it }.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupTheme(notesViewModel.checkLightTheme())
+        setupTheme(viewModel.checkLightTheme())
         setupNavigationView()
         setupNotesAdapter()
         setupGroupsAdapter()
-        setupNotesRecyclerView(notesViewModel.checkLayoutManager())
+        setupNotesRecyclerView(viewModel.checkLayoutManager())
         setupGroupsRecyclerView()
-        initObservers()
         initListeners()
     }
 
     private fun setupTheme(value: Boolean) {
-        if (value) {
-            binding.includeDrawer.dayNightMode.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_light_mode_black_24dp
-                )
-            )
-        } else {
-            binding.includeDrawer.dayNightMode.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_mode_night_black_24dp
-                )
-            )
+        with(binding.includeDrawer.dayNightMode) {
+            if (value) {
+                setImageDrawable(getDrawable(requireContext(), R.drawable.ic_light_mode_black_24dp))
+            } else {
+                setImageDrawable(getDrawable(requireContext(), R.drawable.ic_mode_night_black_24dp))
+            }
         }
-        notesViewModel.putBoolean(value)
+        viewModel.putBoolean(value)
         onChangeThemeCallback.onChange(value)
     }
 
@@ -127,70 +108,29 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
                 executeCommand(
                     ShowNotesByFilterCommand(
                         notesBinding = binding,
-                        notesViewModel = notesViewModel,
+                        notesViewModel = viewModel,
                         filterType = NotesFilterType.ALLNOTES,
                         view = it
                     )
                 )
             }
-            includeDrawer.dayNightMode.setOnClickListener {
-                setupTheme(!notesViewModel.checkLightTheme())
-            }
+            includeDrawer.dayNightMode.setOnClickListener { setupTheme(!viewModel.checkLightTheme()) }
         }
     }
 
-    private fun initToolbar() {
-        toolbarSettings = ToolbarSettings(
-            title = getString(R.string.notesFragmentToolbarTitle),
-            isGone = false,
-            backButtonVisibility = false,
-            onChangeLayoutManagerListener = {
-                when (notesViewModel.checkLayoutManager()) {
-                    LINEAR -> setupNotesRecyclerView(GRID)
-                    GRID -> setupNotesRecyclerView(LINEAR)
-                    else -> null
-                }
-            }
-        ).apply { onSetupToolbarCallback.onSetupToolbar(this) }
-    }
+    private fun setupGroupsAdapter() = viewModel.getAllNameOfGroups()
 
-    private fun initObservers() {
-        notesViewModel.allNotes.observe(
-            viewLifecycleOwner,
-            NotesUiHandler(binding, notesAdapter)::handle
-        )
-
-        notesViewModel.allNotesByGroup.observe(viewLifecycleOwner) {
-            notesAdapter.submitList(it.toList())
-        }
-
-        notesViewModel.noteUi.observe(viewLifecycleOwner) {
-            noteUi = it
-        }
-
-        notesViewModel.allNameOfGroups.observe(viewLifecycleOwner) {
-            adapterListGroups.submitList(it.toList())
-        }
-    }
-
-    private fun setupGroupsAdapter() {
-        notesViewModel.getAllNameOfGroups()
-        adapterListGroups = GroupsAdapter(this)
-    }
-
-    private fun setupNotesAdapter() {
-        notesViewModel.getAllNotes()
-        notesAdapter = NotesAdapter(this)
-    }
+    private fun setupNotesAdapter() = viewModel.getAllNotes()
 
     private fun setupGroupsRecyclerView() {
-        binding.includeDrawer.drawerRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext())
-        binding.includeDrawer.drawerRecyclerView.adapter = adapterListGroups
+        with(binding.includeDrawer.drawerRecyclerView) {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = adapterListGroups
+        }
     }
 
     private fun setupNotesRecyclerView(typeOfLayoutManager: String): Drawable? {
-        notesViewModel.putString(typeOfLayoutManager)
+        viewModel.putString(typeOfLayoutManager)
         NotesItemTouchHelper(this).also {
             ItemTouchHelper(it).attachToRecyclerView(binding.notesRecyclerView)
         }
@@ -199,11 +139,11 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
             when (typeOfLayoutManager) {
                 LINEAR -> {
                     layoutManager = LinearLayoutManager(requireContext())
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_rows)
+                    getDrawable(requireContext(), R.drawable.ic_rows)
                 }
                 GRID -> {
                     layoutManager = GridLayoutManager(requireContext(), 2)
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_grid)
+                    getDrawable(requireContext(), R.drawable.ic_grid)
                 }
                 else -> null
             }
@@ -211,7 +151,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     }
 
     private fun setupNavigationView() {
-        onSetupNavigationViewCallback.onSetupNavigationView(binding.drawerLayout, this)
+        onSetupNavigationViewCallback.onSetupNavigationView(binding.drawerLayout) { findNavController() }
     }
 
     override fun onNoteClick(noteUi: NoteUi) {
@@ -224,37 +164,20 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
     }
 
     override fun onSwipe(position: Int) {
-        executeCommand(DeleteNoteBySwipeCommand(notesAdapter, this, notesViewModel, position))
+        executeCommand(DeleteNoteBySwipeCommand(notesAdapter, this, viewModel, position))
     }
 
     override fun onMove(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
         executeCommand(
-            MoveToChangeNotePositionCommand(
-                viewHolder,
-                target,
-                popupMenu,
-                notesAdapter,
-                notesViewModel
-            )
+            MoveToChangeNotePositionCommand(viewHolder, target, popupMenu, notesAdapter, viewModel)
         )
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
         executeCommand(
-            PopupMenuItemClickCommand(
-                item.itemId,
-                findNavController(),
-                notesViewModel,
-                noteUi,
-                this
-            )
+            PopupMenuItemClickCommand(item.itemId, findNavController(), viewModel, noteUi, this)
         )
         return true
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Injector.clearNotesComponent()
     }
 
     override fun onGroupClick(
@@ -264,7 +187,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         executeCommand(
             ShowNotesByFilterCommand(
                 notesBinding = binding,
-                notesViewModel = notesViewModel,
+                notesViewModel = viewModel,
                 filterType = NotesFilterType.NOTESBYGROUP,
                 nameGroup = nameGroup,
                 view = view
@@ -272,7 +195,32 @@ class NotesFragment : Fragment(R.layout.fragment_notes),
         )
     }
 
-    companion object {
-        const val NOTE_ID = "NOTE_ID"
+    override fun onBindViewModel(viewModel: NotesViewModel) {
+        with(viewModel) {
+            allNotes.observe(viewLifecycleOwner, NotesUiHandler(binding, notesAdapter)::handle)
+            allNotesByGroup.observe(viewLifecycleOwner) { notesAdapter.submitList(it.toList()) }
+            noteUi.observe(viewLifecycleOwner) { this@NotesFragment.noteUi = it }
+            allNameOfGroups.observe(viewLifecycleOwner) { adapterListGroups.submitList(it.toList()) }
+        }
+    }
+
+    override fun onBindToolbar(settings: ToolbarSettings) {
+        toolbarSettings = settings.copy(
+            title = getString(R.string.notesFragmentToolbarTitle),
+            isGone = false,
+            backButtonVisibility = false,
+            onChangeLayoutManagerListener = {
+                when (viewModel.checkLayoutManager()) {
+                    LINEAR -> setupNotesRecyclerView(GRID)
+                    GRID -> setupNotesRecyclerView(LINEAR)
+                    else -> null
+                }
+            }
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Injector.clearNotesComponent()
     }
 }

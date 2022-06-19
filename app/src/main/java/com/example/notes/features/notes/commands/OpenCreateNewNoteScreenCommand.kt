@@ -5,8 +5,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.navigation.fragment.findNavController
 import com.example.notes.R
-import com.example.notes.app.OnSetupToolbarCallback
-import com.example.notes.app.ToolbarSettings
+import com.example.core.base.OnSetupToolbarCallback
+import com.example.core.model.ToolbarSettings
 import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentNotesBinding
 import com.example.notes.features.notes.ui.NotesFragment

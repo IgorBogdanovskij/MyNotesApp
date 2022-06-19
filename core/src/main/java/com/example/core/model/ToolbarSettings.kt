@@ -1,4 +1,4 @@
-package com.example.notes.app
+package com.example.core.model
 
 import android.graphics.drawable.Drawable
 

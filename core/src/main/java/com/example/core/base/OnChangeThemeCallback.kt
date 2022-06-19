@@ -1,4 +1,4 @@
-package com.example.notes.features.notes.ui
+package com.example.core.base
 
 interface OnChangeThemeCallback {
     fun onChange(value: Boolean)

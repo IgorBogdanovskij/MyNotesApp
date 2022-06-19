@@ -1,6 +1,5 @@
 package com.example.notes.features.details.commands
 
-import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavController
 import com.example.notes.common.Command
@@ -12,7 +11,6 @@ import com.example.notes.utility.executeCommand
 class ApplyChangesCommand(
     private val noteId: Int,
     private val noteUi: NoteUi?,
-    private val context: Context,
     private val navController: NavController,
     private val viewModel: NoteDetailsViewModel,
     private var viewBinding: FragmentNoteDetailsBinding
@@ -28,7 +26,7 @@ class ApplyChangesCommand(
 
     private fun createNote() {
         if (checkEmptyNote()) {
-            Toast.makeText(context, "The note is empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(viewBinding.root.context, "The note is empty", Toast.LENGTH_SHORT).show()
         } else {
             executeCommand(CreateNoteCommand(viewModel, viewBinding))
             navController.popBackStack()
