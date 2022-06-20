@@ -5,7 +5,6 @@ import androidx.navigation.NavController
 import com.example.notes.R
 import com.example.notes.common.Command
 import com.example.notes.features.notes.presentation.NotesViewModel
-import com.example.notes.features.notes.recycler.notes.NotesAdapter
 import com.example.notes.features.notes.ui.NotesFragment
 import com.example.notes.models.NoteUi
 import com.example.notes.utility.executeCommand

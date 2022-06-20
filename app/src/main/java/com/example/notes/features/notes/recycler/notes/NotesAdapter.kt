@@ -18,6 +18,8 @@ class NotesAdapter(
             oldItem.id != newItem.id -> return false
             oldItem.title != newItem.title -> return false
             oldItem.description != newItem.description -> return false
+            oldItem.createDate != newItem.createDate -> return false
+            oldItem.sortDate != newItem.sortDate -> return false
             else -> true
         }
     }
@@ -36,6 +38,4 @@ class NotesAdapter(
     }
 
     fun getNoteByPosition(position: Int): NoteUi = getItem(position)
-
-    fun getNotes(): MutableList<NoteUi> = currentList
 }

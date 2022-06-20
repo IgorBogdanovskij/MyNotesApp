@@ -19,12 +19,13 @@ class CreateNoteCommand(
     private fun createAndAddNote(nameGroup: String) {
         viewModel.addNote(
             NoteEntity(
-                viewBinding.editTextTitle.text.toString(),
-                viewBinding.editTextTextDescription.text.toString(),
-                0,
-                0,
-                Date(),
-                nameGroup
+                title = viewBinding.editTextTitle.text.toString(),
+                description = viewBinding.editTextTextDescription.text.toString(),
+                colorBackground = 0,
+                colorText = 0,
+                createDate = Date(),
+                sortDate = Date(),
+                nameGroup = nameGroup
             )
         )
     }

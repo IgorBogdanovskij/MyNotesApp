@@ -7,6 +7,9 @@ class NotesItemTouchHelper(
     private val notesItemTouchHelperCallback: NotesItemTouchHelperCallback
 ) : ItemTouchHelper.Callback() {
 
+    private var fromAdapterPosition = -1
+    private var toAdapterPosition = -1
+
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -36,15 +39,25 @@ class NotesItemTouchHelper(
         y: Int
     ) {
         super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
-        notesItemTouchHelperCallback.onMove(viewHolder, target)
+        fromAdapterPosition = viewHolder.adapterPosition
+        toAdapterPosition = target.adapterPosition
+        notesItemTouchHelperCallback.onMoved(viewHolder, target)
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         notesItemTouchHelperCallback.onSwipe(viewHolder.adapterPosition)
     }
 
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        notesItemTouchHelperCallback.onEndAction(fromAdapterPosition, toAdapterPosition)
+        fromAdapterPosition = -1
+        toAdapterPosition = -1
+        super.clearView(recyclerView, viewHolder)
+    }
+
     interface NotesItemTouchHelperCallback {
         fun onSwipe(position: Int)
-        fun onMove(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder)
+        fun onMoved(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder)
+        fun onEndAction(fromAdapterPosition: Int, toAdapterPosition: Int)
     }
 }

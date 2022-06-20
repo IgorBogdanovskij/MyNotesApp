@@ -8,6 +8,7 @@ data class NoteUi(
     var description: String = "",
     var colorBackground: Int = 0,
     var colorText: Int = 0,
-    var data: Date = Date(),
+    var createDate: Date = Date(),
+    var sortDate: Date = Date(),
     var group: String = "",
 )

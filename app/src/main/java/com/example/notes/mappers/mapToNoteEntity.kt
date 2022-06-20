@@ -3,24 +3,21 @@ package com.example.notes.mappers
 import com.example.domainn.entity.NoteEntity
 import com.example.notes.models.NoteUi
 
+fun mapListToNoteEntity(list: List<NoteUi>): List<NoteEntity> {
 
-fun mapListToNoteEntity(list:List<NoteUi>): List<NoteEntity> {
-
-    val listNotesUI = mutableListOf<NoteEntity>()
-
-    list.forEach {
-        NoteUi(
-            id = it.id,
-            title = it.title,
-            description = it.description,
-            colorBackground = it.colorBackground,
-            colorText = it.colorText,
-            data = it.data,
-            group = it.group
-        )
+    return mutableListOf<NoteEntity>().apply {
+        list.forEach {
+            add(NoteEntity(
+                title = it.title,
+                description = it.description,
+                colorBackground = it.colorBackground,
+                colorText = it.colorText,
+                createDate = it.createDate,
+                sortDate = it.sortDate,
+                nameGroup = it.group
+            ).apply { id = it.id })
+        }
     }
-
-    return listNotesUI
 }
 
 fun mapToNoteEntity(noteUi: NoteUi) =
@@ -29,6 +26,7 @@ fun mapToNoteEntity(noteUi: NoteUi) =
         description = noteUi.description,
         colorBackground = noteUi.colorBackground,
         colorText = noteUi.colorText,
-        data = noteUi.data,
+        createDate = noteUi.createDate,
+        sortDate = noteUi.sortDate,
         nameGroup = noteUi.group
     ).apply { id = noteUi.id }

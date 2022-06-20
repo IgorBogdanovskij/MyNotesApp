@@ -80,16 +80,16 @@ class NotesFragment :
         initListeners()
     }
 
-    private fun setupTheme(value: Boolean) {
+    private fun setupTheme(isLight: Boolean) {
         with(binding.includeDrawer.dayNightMode) {
-            if (value) {
+            if (isLight) {
                 setImageDrawable(getDrawable(requireContext(), R.drawable.ic_light_mode_black_24dp))
             } else {
                 setImageDrawable(getDrawable(requireContext(), R.drawable.ic_mode_night_black_24dp))
             }
         }
-        viewModel.putBoolean(value)
-        onChangeThemeCallback.onChange(value)
+        viewModel.putBoolean(isLight)
+        onChangeThemeCallback.onChange(isLight)
     }
 
     private fun initListeners() {
@@ -160,16 +160,28 @@ class NotesFragment :
 
     override fun onNoteLongClick(view: View, noteUi: NoteUi) {
         this.noteUi = noteUi
-        executeCommand(NoteLongClickCommand(popupMenu, view, requireContext(), this))
+        popupMenu = PopupMenu(requireContext(), view)
+        executeCommand(NoteLongClickCommand(popupMenu, this))
     }
 
     override fun onSwipe(position: Int) {
         executeCommand(DeleteNoteBySwipeCommand(notesAdapter, this, viewModel, position))
     }
 
-    override fun onMove(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
+    override fun onMoved(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
         executeCommand(
-            MoveToChangeNotePositionCommand(viewHolder, target, popupMenu, notesAdapter, viewModel)
+            SwapNotesInNotesRecyclerCommand(viewHolder, target, popupMenu, notesAdapter)
+        )
+    }
+
+    override fun onEndAction(fromAdapterPosition: Int, toAdapterPosition: Int) {
+        executeCommand(
+            SaveSwapToDataBaseCommand(
+                notesViewModel = viewModel,
+                fromAdapterPosition = fromAdapterPosition,
+                toAdapterPosition = toAdapterPosition,
+                notesAdapter = notesAdapter
+            )
         )
     }
 

@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.StateFlow
 @Dao
 interface NoteDao {
 
-    @Query("SELECT * FROM notes_table ORDER BY data DESC")
+    @Query("SELECT * FROM notes_table ORDER BY sortDate DESC")
     fun getAllNotes(): Single<List<NoteEntity>>
 
-    @Query("SELECT * FROM notes_table WHERE nameGroup == :nameGroup ORDER BY data DESC")
+    @Query("SELECT * FROM notes_table WHERE nameGroup == :nameGroup ORDER BY createDate DESC")
     fun getAllNotesByGroup(nameGroup: String): Single<List<NoteEntity>>
 
-    @Query("SELECT DISTINCT nameGroup FROM notes_table WHERE nameGroup !='' ORDER BY data")
+    @Query("SELECT DISTINCT nameGroup FROM notes_table WHERE nameGroup !='' ORDER BY createDate")
     fun getAllNotesWithNameGroup(): Single<List<String>>
 
     @Query("SELECT * FROM notes_table WHERE id == :id")

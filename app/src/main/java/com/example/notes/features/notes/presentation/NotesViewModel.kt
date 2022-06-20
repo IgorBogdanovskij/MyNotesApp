@@ -48,6 +48,7 @@ class NotesViewModel @Inject constructor(
                 if (it.isNullOrEmpty()) {
                     _allNotes.value = State.Error("There are not any notes")
                 } else {
+                    Log.d("lol", "getAllNotes: $it")
                     _allNotes.value = State.Success(it)
                 }
             }, {
@@ -78,27 +79,12 @@ class NotesViewModel @Inject constructor(
             .subscribe()
     }
 
-    private fun updateNote(noteEntity: NoteEntity) {
+    fun updateNote(noteEntity: NoteEntity) {
         interactor
             .updateNote(noteEntity)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete {
-                getAllNameOfGroups()
-            }
+            .doOnComplete(this::getAllNameOfGroups)
             .subscribe()
-    }
-
-    fun moveNotes(noteEntityFrom: NoteEntity, noteEntityTo: NoteEntity) {
-
-        val dataFrom: Date = noteEntityFrom.data;
-        val dataTo: Date = noteEntityTo.data;
-
-        if (dataFrom.toString() != dataTo.toString()) {
-            noteEntityFrom.data = dataTo;
-            updateNote(noteEntityFrom);
-            noteEntityTo.data = dataFrom;
-            updateNote(noteEntityTo);
-        }
     }
 
     fun getAllNewsByGroup(nameGroup: String) {

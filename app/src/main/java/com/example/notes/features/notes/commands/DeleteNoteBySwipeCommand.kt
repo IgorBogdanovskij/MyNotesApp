@@ -1,5 +1,6 @@
 package com.example.notes.features.notes.commands
 
+import android.util.Log
 import com.example.notes.R
 import com.example.notes.common.Command
 import com.example.notes.features.notes.presentation.NotesViewModel

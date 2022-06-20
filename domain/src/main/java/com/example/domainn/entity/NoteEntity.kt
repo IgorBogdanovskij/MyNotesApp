@@ -10,7 +10,8 @@ data class NoteEntity(
     var description: String = "",
     var colorBackground: Int = 0,
     var colorText: Int = 0,
-    var data: Date,
+    var createDate: Date,
+    var sortDate: Date,
     var nameGroup: String = "",
 ){
     @PrimaryKey(autoGenerate = true)
