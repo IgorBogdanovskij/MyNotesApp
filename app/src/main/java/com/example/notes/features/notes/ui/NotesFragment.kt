@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
@@ -48,10 +49,10 @@ class NotesFragment :
     }
 
     private val notesAdapter = NotesAdapter(this)
+    private val selectionManager: SelectionManager = SimpleSelectionManager(notesAdapter)
     private val adapterListGroups = GroupsAdapter(this)
 
-    private var popupMenu: PopupMenu? = null
-    private var noteUi: NoteUi? = null
+    var noteUi: NoteUi? = null
 
     private lateinit var onSetupToolbarCallback: OnSetupToolbarCallback
     private lateinit var onSetupNavigationViewCallback: OnSetupNavigationViewCallback
@@ -70,9 +71,9 @@ class NotesFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupNavigationView()
         super.onViewCreated(view, savedInstanceState)
         setupTheme(viewModel.checkLightTheme())
-        setupNavigationView()
         setupNotesAdapter()
         setupGroupsAdapter()
         setupNotesRecyclerView(viewModel.checkLayoutManager())
@@ -96,7 +97,7 @@ class NotesFragment :
         with(binding) {
             createNewNote.setOnClickListener {
                 executeCommand(
-                    OpenCreateNewNoteScreenCommand(
+                    OpenDetailsScreenCommand(
                         binding = binding,
                         notesFragment = this@NotesFragment,
                         toolbarSettings = toolbarSettings,
@@ -155,13 +156,38 @@ class NotesFragment :
     }
 
     override fun onNoteClick(noteUi: NoteUi) {
-        findNavController().navigate(R.id.noteDetailsFragment, bundleOf(NOTE_ID to noteUi.id))
+        Toast.makeText(requireContext(), "${noteUi}", Toast.LENGTH_SHORT).show()
+        if (toolbarSettings.isSelectionModeActive) {
+            executeCommand(
+                SelectionClickCommand(
+                    noteUi = noteUi,
+                    binding = binding,
+                    notesViewModel = viewModel,
+                    selectionManager = selectionManager,
+                    notesFragment = this,
+                    onSetupToolbarCallback = onSetupToolbarCallback
+                )
+            )
+        } else {
+            findNavController().navigate(
+                R.id.action_notesFragment_to_noteDetailsFragment,
+                bundleOf(NOTE_ID to noteUi.id)
+            )
+        }
     }
 
     override fun onNoteLongClick(view: View, noteUi: NoteUi) {
-        this.noteUi = noteUi
-        popupMenu = PopupMenu(requireContext(), view)
-        executeCommand(NoteLongClickCommand(popupMenu, this))
+        Toast.makeText(requireContext(), "${noteUi}", Toast.LENGTH_SHORT).show()
+        executeCommand(
+            SelectionClickCommand(
+                noteUi = noteUi,
+                binding = binding,
+                notesViewModel = viewModel,
+                selectionManager = selectionManager,
+                notesFragment = this,
+                onSetupToolbarCallback = onSetupToolbarCallback
+            )
+        )
     }
 
     override fun onSwipe(position: Int) {
@@ -169,9 +195,7 @@ class NotesFragment :
     }
 
     override fun onMoved(viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) {
-        executeCommand(
-            SwapNotesInNotesRecyclerCommand(viewHolder, target, popupMenu, notesAdapter)
-        )
+        executeCommand(SwapNotesInNotesRecyclerCommand(viewHolder, target, notesAdapter))
     }
 
     override fun onEndAction(fromAdapterPosition: Int, toAdapterPosition: Int) {
@@ -209,7 +233,7 @@ class NotesFragment :
 
     override fun onBindViewModel(viewModel: NotesViewModel) {
         with(viewModel) {
-            allNotes.observe(viewLifecycleOwner, NotesUiHandler(binding, notesAdapter)::handle)
+            state.observe(viewLifecycleOwner, NotesUiHandler(binding, notesAdapter)::handle)
             allNotesByGroup.observe(viewLifecycleOwner) { notesAdapter.submitList(it.toList()) }
             noteUi.observe(viewLifecycleOwner) { this@NotesFragment.noteUi = it }
             allNameOfGroups.observe(viewLifecycleOwner) { adapterListGroups.submitList(it.toList()) }
@@ -219,8 +243,9 @@ class NotesFragment :
     override fun onBindToolbar(settings: ToolbarSettings) {
         toolbarSettings = settings.copy(
             title = getString(R.string.notesFragmentToolbarTitle),
-            isGone = false,
-            backButtonVisibility = false,
+            isGoneToolbar = false,
+            isBackButtonVisible = false,
+            isChangeLayoutIcon = true,
             onChangeLayoutManagerListener = {
                 when (viewModel.checkLayoutManager()) {
                     LINEAR -> setupNotesRecyclerView(GRID)

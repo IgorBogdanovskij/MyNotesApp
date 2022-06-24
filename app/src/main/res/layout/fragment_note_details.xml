@@ -77,5 +77,15 @@
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutWrite"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <View
+        android:id="@+id/circleUnderApplyChanges"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/circle"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/applyChanges"
+        app:layout_constraintEnd_toEndOf="@+id/applyChanges"
+        app:layout_constraintStart_toStartOf="@+id/applyChanges"
+        app:layout_constraintTop_toTopOf="@+id/applyChanges" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,10 +23,13 @@ interface NotesInteractor {
     fun updateNote(noteEntity: NoteEntity): Completable
 
     fun deleteNote(id: Int): Completable
+
+    fun deleteNotes(notes: List<NoteEntity>): Completable
 }
 
-class NotesInteractorImp @Inject constructor(private val repository: NotesRepository) :
-    NotesInteractor {
+class NotesInteractorImp @Inject constructor(
+    private val repository: NotesRepository
+) : NotesInteractor {
 
     override fun getAllNotes(): Single<List<NoteEntity>> {
         return repository.getAllNotes()
@@ -58,5 +61,9 @@ class NotesInteractorImp @Inject constructor(private val repository: NotesReposi
 
     override fun deleteNote(id: Int): Completable {
         return repository.deleteNote(id)
+    }
+
+    override fun deleteNotes(notes: List<NoteEntity>): Completable {
+        return repository.deleteNotes(notes)
     }
 }

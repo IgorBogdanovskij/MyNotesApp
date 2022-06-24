@@ -16,12 +16,8 @@ class SaveSwapToDataBaseCommand(
         if (fromAdapterPosition != -1 && toAdapterPosition != -1) {
             val fromNote = notesAdapter.currentList[fromAdapterPosition]
             val toNote = notesAdapter.currentList[toAdapterPosition]
-            val fromNoteModified = fromNote.copy(sortDate = toNote.sortDate).apply {
-                id = fromNote.id
-            }
-            val toNoteModified = toNote.copy(sortDate = fromNote.sortDate).apply {
-                id = toNote.id
-            }
+            val fromNoteModified = fromNote.copy(sortDate = toNote.sortDate)
+            val toNoteModified = toNote.copy(sortDate = fromNote.sortDate)
             with(notesViewModel) {
                 updateNote(mapToNoteEntity(fromNoteModified))
                 updateNote(mapToNoteEntity(toNoteModified))

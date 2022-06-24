@@ -1,9 +1,6 @@
 package com.example.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.domainn.entity.NoteEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -36,4 +33,7 @@ interface NoteDao {
 
     @Query("DELETE FROM notes_table WHERE id = :id")
     fun deleteNote(id: Int): Completable
+
+    @Delete
+    fun deleteNotes(notes: List<NoteEntity>): Completable
 }

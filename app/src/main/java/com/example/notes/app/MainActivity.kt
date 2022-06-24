@@ -14,6 +14,7 @@ import com.example.core.model.ToolbarSettings
 import com.example.notes.databinding.ActivityMainBinding
 import com.example.core.base.OnChangeThemeCallback
 import com.example.core.extension.view.setGone
+import com.example.core.extension.view.setVisibility
 
 class MainActivity :
     AppCompatActivity(),
@@ -38,13 +39,26 @@ class MainActivity :
     }
 
     override fun onSetupToolbar(toolbarSettings: ToolbarSettings) {
-        binding.includeAppBar.appBar.setGone(toolbarSettings.isGone)
-        binding.includeAppBar.changeLayoutManager.setOnClickListener {
+        if (toolbarSettings.isSelectionModeActive) {
+            binding.includeAppBar.selectionMode.setGone(false)
+            binding.includeAppBar.toolbar.navigationIcon = null
+            binding.includeAppBar.cancelIcon.setOnClickListener { toolbarSettings.onCancelButtonListener() }
+            binding.includeAppBar.deleteIcon.setOnClickListener { toolbarSettings.onDeleteIconListener() }
+        } else {
+            binding.includeAppBar.selectionMode.setGone(true)
+        }
+        binding.includeAppBar.appBar.setGone(toolbarSettings.isGoneToolbar)
+        binding.includeAppBar.changeLayoutIcon.setVisibility(toolbarSettings.isChangeLayoutIcon)
+        binding.includeAppBar.changeLayoutIcon.setOnClickListener {
             (it as ImageView).setImageDrawable(toolbarSettings.onChangeLayoutManagerListener())
         }
         with(binding.includeAppBar.toolbar) {
             title = toolbarSettings.title
-            if (!toolbarSettings.backButtonVisibility) navigationIcon = null
+            navigationIcon = if (toolbarSettings.isBackButtonVisible) {
+                context.getDrawable(toolbarSettings.backButtonIcon)
+            } else {
+                null
+            }
         }
     }
 

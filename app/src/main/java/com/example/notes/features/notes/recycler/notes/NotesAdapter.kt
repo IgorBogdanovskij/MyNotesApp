@@ -20,6 +20,7 @@ class NotesAdapter(
             oldItem.description != newItem.description -> return false
             oldItem.createDate != newItem.createDate -> return false
             oldItem.sortDate != newItem.sortDate -> return false
+            oldItem.isFocusable != newItem.isFocusable -> return false
             else -> true
         }
     }

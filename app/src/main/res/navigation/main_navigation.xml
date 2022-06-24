@@ -10,15 +10,19 @@
         android:name="com.example.notes.features.notes.ui.NotesFragment"
         tools:layout="@layout/fragment_notes">
         <action
-            android:id="@+id/action_notesFragment_to_notesFragmentWrite"
-            app:destination="@id/noteDetailsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
             android:id="@+id/action_listNotesFragment_to_editFragmentKotlin"
-            app:destination="@id/editFragment" />
+            app:destination="@id/editFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_notesFragment_to_noteDetailsFragment"
+            app:destination="@id/noteDetailsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
 
     <fragment
@@ -29,10 +33,19 @@
             android:name="noteId"
             android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_noteDetailsFragment_to_notesFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:destination="@id/notesFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.notes.features.edit.ui.EditFragment"
-        tools:layout="@layout/fragment_edit" />
+        tools:layout="@layout/fragment_edit">
+        <action
+            android:id="@+id/action_editFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
+    </fragment>
 </navigation>

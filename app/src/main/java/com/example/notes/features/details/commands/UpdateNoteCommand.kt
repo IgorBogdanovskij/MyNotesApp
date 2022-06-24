@@ -13,39 +13,22 @@ class UpdateNoteCommand(
 ) : Command {
 
     override fun execute() {
+        updateNote()
+    }
 
-        val newGroup = viewBinding.autoCompleteTextViewWrite.text.toString()
+    private fun updateNote() {
         val newTitle = viewBinding.editTextTitle.text.toString()
         val newDescription = viewBinding.editTextTextDescription.text.toString()
-        val newNoteUi = noteUi.copy()
+        val newGroup = viewBinding.autoCompleteTextViewWrite.text.toString()
 
-        updateGroup(newGroup, newNoteUi)
-        updateNoteEntry(newTitle, newDescription, newNoteUi)
-        updateNote(newNoteUi)
+        val newNoteUi = noteUi.copy(
+            title = newTitle,
+            description = newDescription,
+            group = newGroup
+        )
 
-    }
-
-    private fun updateNote(newNote: NoteUi) {
-        if (noteUi != newNote) {
-            viewModel.updateNote(mapToNoteEntity(newNote))
+        if (noteUi != newNoteUi) {
+            viewModel.updateNote(mapToNoteEntity(newNoteUi))
         }
-    }
-
-    private fun updateNoteEntry(newTitle: String, newDescription: String, newNote: NoteUi) {
-        if (checkTheSameNote(newTitle, newDescription, newNote)) {
-            newNote.title = newTitle
-            newNote.description = newDescription
-        }
-    }
-
-    private fun updateGroup(newGroup: String, newNote: NoteUi) {
-        if (newGroup.isNotEmpty()) {
-            newNote.group = newGroup
-        }
-    }
-
-    private fun checkTheSameNote(newTitle: String, newDescription: String, newNote: NoteUi): Boolean {
-        return newNote.title.lowercase() != newTitle ||
-                newNote.description.lowercase() != newDescription
     }
 }

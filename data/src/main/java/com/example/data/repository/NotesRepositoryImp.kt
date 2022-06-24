@@ -57,4 +57,9 @@ class NotesRepositoryImp @Inject constructor(
         return noteDao.deleteNote(id)
             .subscribeOn(Schedulers.io())
     }
+
+    override fun deleteNotes(notes: List<NoteEntity>): Completable {
+        return noteDao.deleteNotes(notes)
+            .subscribeOn(Schedulers.io())
+    }
 }

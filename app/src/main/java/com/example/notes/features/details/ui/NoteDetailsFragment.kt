@@ -48,7 +48,7 @@ class NoteDetailsFragment :
                     noteUi = noteUi,
                     navController = findNavController(),
                     viewModel = viewModel,
-                    viewBinding = binding
+                    binding = binding
                 )
             )
         }
@@ -83,7 +83,10 @@ class NoteDetailsFragment :
     }
 
     override fun onBindToolbar(settings: ToolbarSettings) {
-        toolbarSettings = settings.copy(isGone = true)
+        toolbarSettings = settings.copy(
+            isChangeLayoutIcon = false,
+            title = resources.getString(R.string.details_screen)
+        )
     }
 
     override fun onStop() {

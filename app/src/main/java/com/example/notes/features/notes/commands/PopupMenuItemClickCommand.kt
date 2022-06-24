@@ -20,7 +20,10 @@ class PopupMenuItemClickCommand(
     override fun execute() {
         when (idMenuItem) {
             R.id.editPopup -> {
-                navController.navigate(R.id.editFragment, bundleOf(NotesFragment.NOTE_ID to noteUi!!.id))
+                navController.navigate(
+                    R.id.action_listNotesFragment_to_editFragmentKotlin,
+                    bundleOf(NotesFragment.NOTE_ID to noteUi!!.id)
+                )
             }
             R.id.deletePopup -> {
                 executeCommand(DeleteNoteCommand(noteUi!!, notesViewModel, notesFragment))

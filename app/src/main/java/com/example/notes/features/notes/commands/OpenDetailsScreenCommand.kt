@@ -14,7 +14,7 @@ import com.example.notes.features.notes.ui.NotesFragment
 import com.example.core.extension.view.startAnimation
 import com.example.core.extension.view.setVisibility
 
-class OpenCreateNewNoteScreenCommand(
+class OpenDetailsScreenCommand(
     private val binding: FragmentNotesBinding,
     private val notesFragment: NotesFragment,
     private val toolbarSettings: ToolbarSettings?,
@@ -28,8 +28,8 @@ class OpenCreateNewNoteScreenCommand(
                 setVisibility(true)
                 startAnimation(
                     animation = setupAnimation(),
-                    onStart = this@OpenCreateNewNoteScreenCommand::setupOnStart,
-                    onEnd = this@OpenCreateNewNoteScreenCommand::setupOnEnd
+                    onStart = this@OpenDetailsScreenCommand::setupOnStart,
+                    onEnd = this@OpenDetailsScreenCommand::setupOnEnd
                 )
             }
         }
@@ -48,10 +48,10 @@ class OpenCreateNewNoteScreenCommand(
     private fun setupOnStart() {
         binding.emptyListItem.root.visibility = View.INVISIBLE
         binding.notesRecyclerView.setVisibility(false)
-        toolbarSettings?.let { onSetupToolbarCallback.onSetupToolbar(it.copy(isGone = true)) }
+        toolbarSettings?.let { onSetupToolbarCallback.onSetupToolbar(it.copy(isGoneToolbar = true)) }
     }
 
     private fun setupOnEnd() {
-        notesFragment.findNavController().navigate(R.id.action_notesFragment_to_notesFragmentWrite)
+        notesFragment.findNavController().navigate(R.id.noteDetailsFragment)
     }
 }

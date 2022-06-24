@@ -3,12 +3,13 @@ package com.example.notes.models
 import java.util.*
 
 data class NoteUi(
-    var id: Int = 0,
-    var title: String = "",
-    var description: String = "",
-    var colorBackground: Int = 0,
-    var colorText: Int = 0,
-    var createDate: Date = Date(),
-    var sortDate: Date = Date(),
-    var group: String = "",
+    val id: Int = 0,
+    val title: String = "",
+    val description: String = "",
+    val colorBackground: Int = 0,
+    val colorText: Int = 0,
+    val createDate: Date = Date(),
+    val sortDate: Date = Date(),
+    val group: String = "",
+    val isFocusable: Boolean = false
 )

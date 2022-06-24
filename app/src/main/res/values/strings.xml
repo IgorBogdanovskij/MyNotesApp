@@ -14,4 +14,5 @@
     <string name="delete">Delete</string>
     <string name="title">Title</string>
     <string name="defaultResource">default</string>
+    <string name="details_screen">Details</string>
 </resources>

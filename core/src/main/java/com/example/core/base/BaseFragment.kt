@@ -20,20 +20,20 @@ abstract class BaseFragment<VM : ViewModel, VB : ViewBinding>(
     private var _binding: VB? = null
     protected val binding get() = requireNotNull(_binding)
 
-    protected var toolbarSettings: ToolbarSettings = ToolbarSettings()
+    var toolbarSettings: ToolbarSettings = ToolbarSettings()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initToolbar()
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar()
         viewModel?.let { onBindViewModel(it) }
     }
 

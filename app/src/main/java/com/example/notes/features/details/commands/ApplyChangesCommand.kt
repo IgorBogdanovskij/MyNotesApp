@@ -1,7 +1,16 @@
 package com.example.notes.features.details.commands
 
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.navigation.NavController
+import androidx.navigation.navOptions
+import com.example.core.base.OnSetupToolbarCallback
+import com.example.core.extension.view.setVisibility
+import com.example.core.extension.view.startAnimation
+import com.example.core.model.ToolbarSettings
+import com.example.notes.R
 import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentNoteDetailsBinding
 import com.example.notes.features.details.presentation.NoteDetailsViewModel
@@ -13,7 +22,7 @@ class ApplyChangesCommand(
     private val noteUi: NoteUi?,
     private val navController: NavController,
     private val viewModel: NoteDetailsViewModel,
-    private var viewBinding: FragmentNoteDetailsBinding
+    private var binding: FragmentNoteDetailsBinding
 ) : Command {
 
     override fun execute() {
@@ -26,18 +35,18 @@ class ApplyChangesCommand(
 
     private fun createNote() {
         if (checkEmptyNote()) {
-            Toast.makeText(viewBinding.root.context, "The note is empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(binding.root.context, "The note is empty", Toast.LENGTH_SHORT).show()
         } else {
-            executeCommand(CreateNoteCommand(viewModel, viewBinding))
+            executeCommand(CreateNoteCommand(viewModel, binding))
             navController.popBackStack()
         }
     }
 
     private fun updateNote() {
-        executeCommand(UpdateNoteCommand(noteUi!!, viewModel, viewBinding))
+        executeCommand(UpdateNoteCommand(noteUi!!, viewModel, binding))
         navController.popBackStack()
     }
 
-    private fun checkEmptyNote() = viewBinding.editTextTitle.text.toString().isEmpty() &&
-            viewBinding.editTextTextDescription.text.toString().isEmpty()
+    private fun checkEmptyNote() = binding.editTextTitle.text.toString().isEmpty() &&
+            binding.editTextTextDescription.text.toString().isEmpty()
 }

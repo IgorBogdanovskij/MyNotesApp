@@ -9,6 +9,7 @@ import com.example.data.sharedPrefManager.SharedPreferencesManager
 import com.example.domainn.entity.NoteEntity
 import com.example.domainn.interactor.NotesInteractor
 import com.example.notes.mappers.mapItemToNoteUI
+import com.example.notes.mappers.mapListToNoteEntity
 import com.example.notes.mappers.mapListToNoteUI
 import com.example.notes.models.NoteUi
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,7 +17,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.*
 import javax.inject.Inject
 
 class NotesViewModel @Inject constructor(
@@ -24,9 +24,9 @@ class NotesViewModel @Inject constructor(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) : ViewModel() {
 
-    private var _allNotes: MutableLiveData<State> = MutableLiveData()
-    val allNotes: LiveData<State>
-        get() = _allNotes
+    private var _state: MutableLiveData<State> = MutableLiveData()
+    val state: LiveData<State>
+        get() = _state
 
     private var _allNotesByGroup: MutableLiveData<List<NoteUi>> = MutableLiveData()
     val allNotesByGroup: LiveData<List<NoteUi>>
@@ -46,19 +46,29 @@ class NotesViewModel @Inject constructor(
             .map(::mapListToNoteUI)
             .subscribe({
                 if (it.isNullOrEmpty()) {
-                    _allNotes.value = State.Error("There are not any notes")
+                    _state.value = State.Error("There are not any notes")
                 } else {
-                    Log.d("lol", "getAllNotes: $it")
-                    _allNotes.value = State.Success(it)
+                    _state.value = State.Success(it)
                 }
             }, {
-                _allNotes.value = State.Error("${it.message}")
+                _state.value = State.Error("${it.message}")
             })
     }
 
     fun deleteNote(id: Int) {
         interactor
             .deleteNote(id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                getAllNotes()
+                getAllNameOfGroups()
+            }
+            .subscribe()
+    }
+
+    fun deleteNotes(notes: List<NoteUi>) {
+        interactor
+            .deleteNotes(mapListToNoteEntity(notes))
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 getAllNotes()
