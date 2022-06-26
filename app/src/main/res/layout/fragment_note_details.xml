@@ -77,6 +77,16 @@
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutWrite"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/editNote"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:icon="@drawable/ic_baseline_edit_24"
+        app:iconTint="?colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/applyChanges"
+        app:layout_constraintEnd_toEndOf="@+id/applyChanges" />
+
     <View
         android:id="@+id/circleUnderApplyChanges"
         android:layout_width="40dp"

@@ -41,7 +41,6 @@ class NotesFragment :
     BaseFragment<NotesViewModel, FragmentNotesBinding>(FragmentNotesBinding::inflate),
     OnNoteClickListener,
     NotesItemTouchHelper.NotesItemTouchHelperCallback,
-    PopupMenu.OnMenuItemClickListener,
     OnGroupClickListener {
 
     companion object {
@@ -71,8 +70,8 @@ class NotesFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigationView()
         super.onViewCreated(view, savedInstanceState)
+        setupNavigationView()
         setupTheme(viewModel.checkLightTheme())
         setupNotesAdapter()
         setupGroupsAdapter()
@@ -151,12 +150,11 @@ class NotesFragment :
         }
     }
 
-    private fun setupNavigationView() {
+    fun setupNavigationView() {
         onSetupNavigationViewCallback.onSetupNavigationView(binding.drawerLayout) { findNavController() }
     }
 
     override fun onNoteClick(noteUi: NoteUi) {
-        Toast.makeText(requireContext(), "${noteUi}", Toast.LENGTH_SHORT).show()
         if (toolbarSettings.isSelectionModeActive) {
             executeCommand(
                 SelectionClickCommand(
@@ -177,7 +175,6 @@ class NotesFragment :
     }
 
     override fun onNoteLongClick(view: View, noteUi: NoteUi) {
-        Toast.makeText(requireContext(), "${noteUi}", Toast.LENGTH_SHORT).show()
         executeCommand(
             SelectionClickCommand(
                 noteUi = noteUi,
@@ -207,13 +204,6 @@ class NotesFragment :
                 notesAdapter = notesAdapter
             )
         )
-    }
-
-    override fun onMenuItemClick(item: MenuItem): Boolean {
-        executeCommand(
-            PopupMenuItemClickCommand(item.itemId, findNavController(), viewModel, noteUi, this)
-        )
-        return true
     }
 
     override fun onGroupClick(

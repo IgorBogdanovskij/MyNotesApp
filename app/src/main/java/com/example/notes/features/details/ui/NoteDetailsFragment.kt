@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.core.base.BaseFragment
+import com.example.core.extension.view.setGone
 import com.example.core.model.ToolbarSettings
 import com.example.notes.R
 import com.example.notes.databinding.FragmentNoteDetailsBinding
@@ -38,19 +40,28 @@ class NoteDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
         setupData()
         initListeners()
+        renderUi(noteUi)
     }
 
     private fun initListeners() {
-        binding.applyChanges.setOnClickListener {
-            executeCommand(
-                ApplyChangesCommand(
-                    noteId = noteId,
-                    noteUi = noteUi,
-                    navController = findNavController(),
-                    viewModel = viewModel,
-                    binding = binding
+        with(binding) {
+            applyChanges.setOnClickListener {
+                executeCommand(
+                    ApplyChangesCommand(
+                        noteId = noteId,
+                        noteUi = noteUi,
+                        navController = findNavController(),
+                        viewModel = viewModel,
+                        binding = binding
+                    )
                 )
-            )
+            }
+            editNote.setOnClickListener {
+                findNavController().navigate(
+                    R.id.editFragment,
+                    bundleOf(NotesFragment.NOTE_ID to noteUi!!.id)
+                )
+            }
         }
     }
 
@@ -71,10 +82,15 @@ class NoteDetailsFragment :
         }
     }
 
-    private fun renderUi(noteUi: NoteUi) {
-        this.noteUi = noteUi
-        binding.editTextTitle.setText(noteUi.title)
-        binding.editTextTextDescription.setText(noteUi.description)
+    private fun renderUi(noteUi: NoteUi?) {
+        if (noteUi != null) {
+            this.noteUi = noteUi
+            binding.editTextTitle.setText(noteUi.title)
+            binding.editTextTextDescription.setText(noteUi.description)
+            binding.editNote.setGone(false)
+        } else {
+            binding.editNote.setGone(true)
+        }
     }
 
     override fun onBindViewModel(viewModel: NoteDetailsViewModel) {
@@ -84,6 +100,7 @@ class NoteDetailsFragment :
 
     override fun onBindToolbar(settings: ToolbarSettings) {
         toolbarSettings = settings.copy(
+            isBackButtonVisible = true,
             isChangeLayoutIcon = false,
             title = resources.getString(R.string.details_screen)
         )

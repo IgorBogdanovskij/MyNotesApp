@@ -1,11 +1,10 @@
 package com.example.notes.features.notes.commands
 
-import android.opengl.Visibility
-import android.view.View
+import android.util.Log
 import android.widget.Toast
 import com.example.core.base.OnSetupToolbarCallback
 import com.example.core.extension.view.setVisibility
-import com.example.core.model.ToolbarSettings
+import com.example.notes.R
 import com.example.notes.common.Command
 import com.example.notes.databinding.FragmentNotesBinding
 import com.example.notes.features.notes.presentation.NotesViewModel
@@ -31,41 +30,57 @@ class SelectionClickCommand(
         )
         setupItemsVisibility(false)
         runSelectionOperation()
-        onSetupToolbarCallback.onSetupToolbar(notesFragment.toolbarSettings)
     }
 
-    private fun setupItemsVisibility(isVisible: Boolean) {
-        with(binding) {
-            createNewNote.setVisibility(isVisible)
-            circleUnderCreateNewNote.setVisibility(isVisible)
+    private fun runSelectionOperation() {
+        val context = notesFragment.requireContext()
+        with(selectionManager) {
+            if (isAlreadyAdded(noteUi)) {
+                unselect(noteUi)
+                notesFragment.toolbarSettings = notesFragment.toolbarSettings.copy(
+                    titleInSelectionMode = context.getString(
+                        R.string.selected, selectionManager.getAllSelectedItems().size
+                    )
+                )
+                onSetupToolbarCallback.onSetupToolbar(notesFragment.toolbarSettings)
+                if (isEmpty()) {
+                    setupItemsVisibility(true)
+                    with(notesFragment) {
+                        toolbarSettings = toolbarSettings.copy(isSelectionModeActive = false)
+                        onSetupToolbarCallback.onSetupToolbar(toolbarSettings)
+                        setupNavigationView()
+                    }
+                }
+            } else {
+                select(noteUi)
+                notesFragment.toolbarSettings = notesFragment.toolbarSettings.copy(
+                    titleInSelectionMode = context.getString(
+                        R.string.selected, selectionManager.getAllSelectedItems().size
+                    )
+                )
+                onSetupToolbarCallback.onSetupToolbar(notesFragment.toolbarSettings)
+            }
         }
     }
 
     private fun onCancelButtonActions() {
         selectionManager.unselectAll()
-        notesFragment.toolbarSettings =
-            notesFragment.toolbarSettings.copy(isSelectionModeActive = false)
-        onSetupToolbarCallback.onSetupToolbar(notesFragment.toolbarSettings)
-        setupItemsVisibility(true)
+        with(notesFragment) {
+            toolbarSettings = notesFragment.toolbarSettings.copy(isSelectionModeActive = false)
+            onSetupToolbarCallback.onSetupToolbar(toolbarSettings)
+            setupItemsVisibility(true)
+            setupNavigationView()
+        }
     }
 
     private fun onDeleteNotesAction() {
         notesViewModel.deleteNotes(selectionManager.getAllSelectedItems())
     }
 
-    private fun runSelectionOperation() {
-        with(selectionManager) {
-            if (isAlreadyAdded(noteUi)) {
-                Toast.makeText(notesFragment.requireContext(), "${isAlreadyAdded(noteUi)}", Toast.LENGTH_SHORT).show()
-                unselect(noteUi)
-                if (isEmpty()) {
-                    setupItemsVisibility(true)
-                    notesFragment.toolbarSettings =
-                        notesFragment.toolbarSettings.copy(isSelectionModeActive = false)
-                }
-            } else {
-                select(noteUi)
-            }
+    private fun setupItemsVisibility(isVisible: Boolean) {
+        with(binding) {
+            createNewNote.setVisibility(isVisible)
+            circleUnderCreateNewNote.setVisibility(isVisible)
         }
     }
 }

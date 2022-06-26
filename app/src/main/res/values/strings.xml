@@ -15,4 +15,5 @@
     <string name="title">Title</string>
     <string name="defaultResource">default</string>
     <string name="details_screen">Details</string>
+    <string name="selected">Selected: %1$d</string>
 </resources>

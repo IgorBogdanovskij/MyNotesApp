@@ -40,7 +40,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Injector.inject(this)
         viewBinding = FragmentEditBinding.inflate(layoutInflater)
         return viewBinding.root
@@ -99,9 +99,5 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     override fun onStop() {
         super.onStop()
         Injector.clearEditComponent()
-    }
-
-    companion object {
-        fun newInstance() = EditFragment()
     }
 }

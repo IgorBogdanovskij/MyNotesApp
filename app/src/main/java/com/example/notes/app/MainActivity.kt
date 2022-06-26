@@ -41,9 +41,9 @@ class MainActivity :
     override fun onSetupToolbar(toolbarSettings: ToolbarSettings) {
         if (toolbarSettings.isSelectionModeActive) {
             binding.includeAppBar.selectionMode.setGone(false)
-            binding.includeAppBar.toolbar.navigationIcon = null
             binding.includeAppBar.cancelIcon.setOnClickListener { toolbarSettings.onCancelButtonListener() }
             binding.includeAppBar.deleteIcon.setOnClickListener { toolbarSettings.onDeleteIconListener() }
+            binding.includeAppBar.countSelectedItems.text = toolbarSettings.titleInSelectionMode
         } else {
             binding.includeAppBar.selectionMode.setGone(true)
         }

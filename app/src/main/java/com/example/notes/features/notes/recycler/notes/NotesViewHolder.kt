@@ -1,6 +1,7 @@
 package com.example.notes.features.notes.recycler.notes
 
 import android.content.res.Configuration
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
@@ -56,6 +57,12 @@ class NotesViewHolder(
             if (noteUi.isFocusable) {
                 noteContainer.background =
                     getDrawable(context, R.drawable.selection_note_item_background)
+            } else {
+                if (noteUi.colorBackground != 0) {
+                    noteContainer.setBackgroundColor(getColor(context, noteUi.colorBackground))
+                } else {
+                    noteContainer.setBackgroundColor(getColor(context, cardBackgroundColor))
+                }
             }
         }
     }

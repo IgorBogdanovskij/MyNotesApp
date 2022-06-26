@@ -10,13 +10,6 @@
         android:name="com.example.notes.features.notes.ui.NotesFragment"
         tools:layout="@layout/fragment_notes">
         <action
-            android:id="@+id/action_listNotesFragment_to_editFragmentKotlin"
-            app:destination="@id/editFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
-        <action
             android:id="@+id/action_notesFragment_to_noteDetailsFragment"
             app:destination="@id/noteDetailsFragment"
             app:enterAnim="@anim/from_right"
@@ -38,6 +31,9 @@
             app:enterAnim="@anim/from_left"
             app:exitAnim="@anim/to_right"
             app:destination="@id/notesFragment" />
+        <action
+            android:id="@+id/action_noteDetailsFragment_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
 
     <fragment
@@ -45,7 +41,7 @@
         android:name="com.example.notes.features.edit.ui.EditFragment"
         tools:layout="@layout/fragment_edit">
         <action
-            android:id="@+id/action_editFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            android:id="@+id/action_editFragment_to_noteDetailsFragment"
+            app:destination="@id/noteDetailsFragment" />
     </fragment>
 </navigation>
